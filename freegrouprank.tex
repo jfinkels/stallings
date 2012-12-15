@@ -13,6 +13,7 @@
 \declaretheorem[numberlike=theorem]{corollary}
 \declaretheorem[numberlike=theorem]{lemma}
 \declaretheorem[numberlike=theorem, style=definition]{definition}
+\declaretheorem[numberlike=theorem, style=definition]{todo}
 
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
@@ -158,6 +159,16 @@ We restate in the language of complexity theory a result implicit in \cite{km02}
 \begin{corollary}
   $\FD$ is \P-complete.
 \end{corollary}
+
+\begin{todo}
+  Below is sketchy, this is just my current thoughts.
+\end{todo}
+The bottleneck in deciding an instance of $\FD$ seems to be computing $F(G)$ from the graph $G$.
+$G$ can be seen as a restricted type of $\epsilon$-free nondeterministic finite state automaton (NFA).
+$F(G)$ can therefore be seen as an equivalent deterministic finite state automaton (DFA) which results from minimizing the number of states of $G$.
+Thus it seems that a highly parallel approximation algorithm for minimizing the number of states in an NFA would yield some insight into approximating $\FD$, and hence approximating $\FGR$.
+Unfortunately, it seems that it no polynomial time $o(n)$-approximation algorithm exists for NFA minimization unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
+Note that this doesn't necessarily mean such a lower bound holds for our very restricted type of $\epsilon$-free NFA.
 
 \bibliographystyle{plain}
 \bibliography{references}

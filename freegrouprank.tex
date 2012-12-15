@@ -17,6 +17,7 @@
 
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
+\newcommand{\DLF}{\textsc{Double Loop Folds}}
 \newcommand{\triple}[3]{\langle #1, #2, #3 \rangle}
 \newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
 \newcommand{\gen}[1]{\langle #1 \rangle}
@@ -82,6 +83,14 @@ Stated another way, $G$ is folded if there is no vertex $v \in V(G)$ such that $
   \textbf{Question}: Does $F(G)$ have additive density at most $k$?
 \end{definition}
 
+\begin{definition}[\DLF]
+  \mbox{}
+
+  \textbf{Instance}: finite alphabet $S$, directed graph $G$ labeled by $S$, a vertex $v \in V(G)$ such that $G$ is a core graph with respect to $v$, positive integer $k$.
+
+  \textbf{Question}: Does $F$ produce $k$ or more double loop folds when run on input $G$, that is, $N^\infty_F(G) \geq k$?
+\end{definition}
+
 \begin{lemma}\label{lem:tree}
   Let $G$ be a graph with vertex set $V$ and edge set $E$.
   If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
@@ -104,14 +113,19 @@ Stated another way, $G$ is folded if there is no vertex $v \in V(G)$ such that $
 \section{Results}
 
 \begin{theorem}[{\cite[Problem~A.8.11]{ghr95}}]
-  $\FGR$ is \P-complete.
+  \FGR{} is \P-complete.
 \end{theorem}
 
 We restate in the language of complexity theory a result implicit in \cite{km02}.
 \begin{theorem}
-  $\FGR \leq_m^L \FD$.
+  \FD{} is \P-complete.
 \end{theorem}
 \begin{proof}
+  Stallings' folding process \cite[Algorithm~5.4]{stallings83} is an algorithm which computes the function $F$; it can be implemented in $O(n \log^* n)$ time \cite{touikan06}.
+  After computing $F(G)$, it is simple to compare the number of edges in the graph to the number of vertices plus $k$.
+  Therefore, $\FD \in \P$.
+
+  To show that \FD{} is \P-hard, we show a logarithmic space many-one reduction from \FGR{} to \FD.
   The reduction proceeds as follows on input $\triple{S}{U}{k}$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i$ with $1 \leq i \leq m$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n}$ where $n$ is the length of $u_i$.
   Create and output a directed graph $G$ which is a bouquet of circles centered at a distinguished vertex $v_0$.
   There is one circle for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
@@ -148,27 +162,44 @@ We restate in the language of complexity theory a result implicit in \cite{km02}
   With this equality, we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $\delta(G') + 1 \leq k$, which is what we intended to show.
 \end{proof}
 
-\begin{theorem}
-  $\FD \in \P$.
-\end{theorem}
-\begin{proof}
-  Stallings' folding process \cite[Algorithm~5.4]{stallings83} is an algorithm which computes the function $F$; it can be implemented in $O(n \log^* n)$ time \cite{touikan06}.
-  After computing $F(G)$, it is simple to compare the number of edges in the graph to the number of vertices plus $k$.
-\end{proof}
-
-\begin{corollary}
-  $\FD$ is \P-complete.
-\end{corollary}
+Like several other \P-complete decision problems, \FD{} asks a question whose answer requires computing an inherently sequential function.
+The inherently sequential part of this problem seems to be Stallings' folding algorithm which consists of a sequence of steps, each of which depends on the result of the previous.
 
 \begin{todo}
   Below is sketchy, this is just my current thoughts.
+
+  The bottleneck in deciding an instance of \FD{} seems to be computing $F(G)$ from the graph $G$.
+  $G$ can be seen as a restricted type of $\epsilon$-free nondeterministic finite state automaton (NFA).
+  $F(G)$ can therefore be seen as an equivalent deterministic finite state automaton (DFA) which results from minimizing the number of states of $G$.
+  Thus it seems that a highly parallel approximation algorithm for minimizing the number of states in an NFA would yield some insight into approximating \FD, and hence approximating \FGR.
+  Unfortunately, it seems that it no polynomial time $o(n)$-approximation algorithm exists for NFA minimization unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
+  Note that this doesn't necessarily mean such a lower bound holds for our very restricted type of $\epsilon$-free NFA.
 \end{todo}
-The bottleneck in deciding an instance of $\FD$ seems to be computing $F(G)$ from the graph $G$.
-$G$ can be seen as a restricted type of $\epsilon$-free nondeterministic finite state automaton (NFA).
-$F(G)$ can therefore be seen as an equivalent deterministic finite state automaton (DFA) which results from minimizing the number of states of $G$.
-Thus it seems that a highly parallel approximation algorithm for minimizing the number of states in an NFA would yield some insight into approximating $\FD$, and hence approximating $\FGR$.
-Unfortunately, it seems that it no polynomial time $o(n)$-approximation algorithm exists for NFA minimization unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
-Note that this doesn't necessarily mean such a lower bound holds for our very restricted type of $\epsilon$-free NFA.
+
+\begin{theorem}
+  \DLF{} is \P-complete.
+\end{theorem}
+\begin{proof}
+  Like for \FD, computing Stallings folding algorithm and counting the number of double loop folds places this problem in \P.
+  We show a logarithmic space many-one reduction from \FD{} to \DLF{} to complete the proof.
+  The reduction is the identity mapping on all components of the instance except for the integer $k$, which is mapped to $\delta(G) - k$.
+  Counting the number of vertices and number of edges in $G$, then performing an addition and a subtraction can be performed in logarithmic space.
+  It remains to show the correctness of the reduction.
+
+  Each fold in Stallings' folding algorithm decreases the number of edges in the final graph by one.
+  Each fold which is not a fold of two self-loops is decreases the number of vertices in the final graph by one.
+  A fold of two self-loops does not decrease the number of vertices.
+  Let $N_F(G)$ be the number of folds when Stallings' folding algorithm is run on input $G$, and let $N^\infty_F(G)$ be the number of those folds which are folds of two self-loops.
+  It follows that $|E(F(G))| = |E(G)| - N_F(G)$ and $|V(F(G))| = |V(G)| - (N_F(G) - N^\infty_F(G))$.
+  Hence
+  \begin{align*}
+    \delta(F(G)) & = |E(F(G))| - |V(F(G))| \\
+                 & = (|E(G)| - N_F(G)) - (|V(G) - (N_F(G) - N^\infty_F(G))) \\
+                 & = (|E(G)| - |V(G)|) - N_F(G) + N_F(G) - N^\infty_F(G) \\
+                 & = \delta(G) - N^\infty_F(G).
+  \end{align*}
+  Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\infty_F(G) \leq k \iff N^\infty_F(G) \geq \delta(G) - k$.
+\end{proof}
 
 \bibliographystyle{plain}
 \bibliography{references}

@@ -183,7 +183,7 @@ The inherently sequential part of this problem seems to be Stallings' folding al
   Like for \FD, computing Stallings folding algorithm and counting the number of double loop folds places this problem in \P.
   We show a logarithmic space many-one reduction from \FD{} to \DLF{} to complete the proof.
   The reduction is the identity mapping on all components of the instance except for the integer $k$, which is mapped to $\delta(G) - k$.
-  Counting the number of vertices and number of edges in $G$, then performing an addition and a subtraction can be performed in logarithmic space.
+  Counting the number of vertices and number of edges in $G$, then performing two subtractions can be performed in logarithmic space.
   It remains to show the correctness of the reduction.
 
   Each fold in Stallings' folding algorithm decreases the number of edges in the final graph by one.

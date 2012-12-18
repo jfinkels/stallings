@@ -17,7 +17,7 @@
 
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
-\newcommand{\NDM}{\textsc{$\epsilon$-free NFA-to-DFA Minimization}}
+\newcommand{\NDM}{\textsc{SOME RESTRICTED CLASS OF NFA-to-DFA Minimization}}
 \newcommand{\PFolds}{\textsc{Parallel Folds}}
 \newcommand{\triple}[3]{\langle #1, #2, #3 \rangle}
 \newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
@@ -259,27 +259,27 @@ In general, computing a minimal DFA from an arbitrary NFA may take exponential t
 Indeed, even computing a minimal NFA from an arbitrary NFA that has a very limited amount of nondeterminism is \NP-hard \cite[Corollary~3]{bm08}.
 Furthermore, no polynomial time $o(n)$-approximation algorithm exists for the size of a minimal equivalent NFA unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
 
-However, the good news is that Stallings' folding process essentially shows that computing a minimal NFA from an \emph{$\epsilon$-free} NFA (that is, an NFA with no $\epsilon$ transitions) can be computed in polynomial time, and the minimal NFA is in fact deterministic!
+%% TODO Is this true? Check if this class of highly restricted NFAs is in the
+%% class \deltaNFA defined in \cite{bm08}.
+However, the good news is that Stallings' folding process essentially shows that computing a minimal NFA from a (FILL ME IN, SOME VERY RESTRICTED CLASS) NFA can be computed in polynomial time, and the minimal NFA is in fact deterministic!
 
 \begin{definition}[\NDM]
   \mbox{}
 
   \instanceindent
-  \Instance $\epsilon$-free nondeterministic finite state automaton $M$, positive integer $k$.
+  \Instance nondeterministic finite state automaton $M$, positive integer $k$.
 
   \questionindent
   \Question Does there exist a deterministic finite state automaton $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
 \end{definition}
 
 \begin{theorem}
-  \NDM{} is \P-complete.
+  $\NDM{} \in \P$.
 \end{theorem}
-\begin{proof}
-  Applying Stallings' folding process to the graph underlying the input NFA yields an equivalent DFA.
-  Compare the size of that DFA to $k$ to decide the problem in polynomial time.
-  To show that the problem is \P-hard, we provide a logarithmic space many-one reduction from \FD.
-  %% TODO fill me in
-\end{proof}
+%% TODO Use the techniques of recent works for analyzing NFAs with limited
+%% nondeterminism, like \cite{bm08}, \cite{gs05}, and ``Measures of
+%% Nondeterminism in Finite Automata'', to prove analagous results for free
+%% group rank approximation for restricted types of subgroups.
 
 \bibliographystyle{plain}
 \bibliography{references}

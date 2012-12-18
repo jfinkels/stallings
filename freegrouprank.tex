@@ -8,7 +8,6 @@
 \usepackage{complexity}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{calc}
 
 \declaretheorem[numberwithin=section]{theorem}
 \declaretheorem[numberlike=theorem]{corollary}
@@ -28,11 +27,11 @@
 \newcommand{\Instance}{\textbf{Instance}: }
 \newcommand{\Question}{\textbf{Question}: }
 \newcommand{\instanceindent}{%
-  \setlength{\leftskip}{\widthof{\Instance}}%
-  \setlength{\parindent}{0pt - \widthof{\Instance}}}
+  \setlength{\leftskip}{2em}%
+  \setlength{\parindent}{-2em}}
 \newcommand{\questionindent}{%
-  \setlength{\leftskip}{\widthof{\Question}}%
-  \setlength{\parindent}{0pt - \widthof{\Question}}}
+  \setlength{\leftskip}{2em}%
+  \setlength{\parindent}{-2em}}
 
 \author{Jef{}frey~Finkelstein}
 \title{The Folded Density Problem is \P-complete}
@@ -133,7 +132,8 @@ In the following decision problems, we ask to compute some properties about the 
   \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
 
-  \textbf{Question}: Does $F(G)$ have additive density at most $k$?
+  \questionindent
+  \Question Does $F(G)$ have additive density at most $k$?
 \end{definition}
 
 \begin{definition}[\DLF]

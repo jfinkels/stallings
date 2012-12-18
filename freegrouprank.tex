@@ -17,6 +17,7 @@
 
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
+\newcommand{\NDM}{\textsc{$\epsilon$-free NFA-to-DFA Minimization}}
 \newcommand{\PFolds}{\textsc{Parallel Folds}}
 \newcommand{\triple}[3]{\langle #1, #2, #3 \rangle}
 \newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
@@ -222,17 +223,6 @@ We restate in the language of complexity theory a result implicit in \cite{km02}
 Like several other \P-complete decision problems, \FD{} asks a question whose answer requires computing an inherently sequential function.
 The inherently sequential part of this problem seems to be Stallings' folding process which consists of a sequence of steps, each of which depends on the result of the previous.
 
-\begin{todo}
-  Below is sketchy, this is just my current thoughts.
-
-  The bottleneck in deciding an instance of \FD{} seems to be computing $F(G)$ from the graph $G$.
-  $G$ can be seen as a restricted type of $\epsilon$-free nondeterministic finite state automaton (NFA).
-  $F(G)$ can therefore be seen as an equivalent deterministic finite state automaton (DFA) which results from minimizing the number of states of $G$.
-  Thus it seems that a highly parallel approximation algorithm for minimizing the number of states in an NFA would yield some insight into approximating \FD, and hence approximating \FGR.
-  Unfortunately, it seems that it no polynomial time $o(n)$-approximation algorithm exists for NFA minimization unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
-  Note that this doesn't necessarily mean such a lower bound holds for our very restricted type of $\epsilon$-free NFA.
-\end{todo}
-
 \begin{theorem}
   \PFolds{} is \P-complete, even when the graph is a both a flower graph and a core graph with respect to a distinguished vertex.
 \end{theorem}
@@ -256,6 +246,39 @@ The inherently sequential part of this problem seems to be Stallings' folding pr
                  & = \delta(G) - N^\|_F(G).
   \end{align*}
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
+\end{proof}
+
+The labeled, directed graphs we are considering are very similar to nondeterministic finite state automata (NFA).
+In fact, a labeled, directed graph is folded if and only if the corresponding finite state automaton is deterministic \cite[Remark~2.8]{km02}.
+Intuitively, when the graph is interpreted as an NFA, the \FD{} problem asks if a minimal equivalent deterministic finite state automaton (DFA) minimizes the difference between the number of transitions and the number of states.
+This may be valuable if implementing a transition in some concrete implementation of a DFA is more expensive than implementing a state.
+Similarly, the \PFolds{} problem asks if a minimal equivalent DFA has eliminated many redundant transitions.
+
+Computing a minimal equivalent DFA from an arbitrary NFA is a problem of high computational complexity.
+In general, computing a minimal DFA from an arbitrary NFA may take exponential time \cite{citationneeded}.
+Indeed, even computing a minimal NFA from an arbitrary NFA that has a very limited amount of nondeterminism is \NP-hard \cite[Corollary~3]{bm08}.
+Furthermore, no polynomial time $o(n)$-approximation algorithm exists for the size of a minimal equivalent NFA unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
+
+However, the good news is that Stallings' folding process essentially shows that computing a minimal NFA from an \emph{$\epsilon$-free} NFA (that is, an NFA with no $\epsilon$ transitions) can be computed in polynomial time, and the minimal NFA is in fact deterministic!
+
+\begin{definition}[\NDM]
+  \mbox{}
+
+  \instanceindent
+  \Instance $\epsilon$-free nondeterministic finite state automaton $M$, positive integer $k$.
+
+  \questionindent
+  \Question Does there exist a deterministic finite state automaton $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
+\end{definition}
+
+\begin{theorem}
+  \NDM{} is \P-complete.
+\end{theorem}
+\begin{proof}
+  Applying Stallings' folding process to the graph underlying the input NFA yields an equivalent DFA.
+  Compare the size of that DFA to $k$ to decide the problem in polynomial time.
+  To show that the problem is \P-hard, we provide a logarithmic space many-one reduction from \FD.
+  %% TODO fill me in
 \end{proof}
 
 \bibliographystyle{plain}

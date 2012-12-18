@@ -24,7 +24,7 @@
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
 \newcommand{\pos}{\textnormal{pos}}
-\newcommand{\neg}{\textnormal{neg}}
+\newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Instance}{\textbf{Instance}: }
 \newcommand{\Question}{\textbf{Question}: }
 \newcommand{\instanceindent}{%
@@ -88,10 +88,16 @@ The \emph{additive density} of $G$, denoted $\delta(G)$, is defined by $\delta(G
 We say $G$ is \emph{labeled} by $S$ if there exists a function $\mu \colon E(G) \to S$.
 If $G$ is a labeled, directed graph, then its \emph{inverse graph}, denoted $\hat{G}$, has the same vertex set and edge set, but wherever there is an edge $(u, v) \in E(G)$ with label $s$ we add the inverse edge $(v, u)$ to $E(\hat{G})$ with label $s^{-1}$.
 The \emph{positive} edges of $\hat{G}$ are the edges with labels in $S$ and the \emph{negative} edges are those with labels in $S^{-1}$.
-If $E$ is a set of directed, labeled edges, we denote the positive edges in $E$ by $\pos(E)$ and the negative edges by $\neg(E)$.
+If $E$ is a set of directed, labeled edges, we denote the positive edges in $E$ by $\pos(E)$ and the negative edges by $\nega(E)$.
 The \emph{label} of a path $p$, denoted $\mu(p)$, is the sequence of labels of each of its constituent edges.
 We sometimes abuse notation for the sake of convenience and discuss a path in $G$ when what we mean is a path in the subgraph induced by the positive edges of $\hat{G}$ in which edges $e$ with the inverse orientation are allowed, but their labels $\mu(e)$ are read as the corresponding inverse label $\mu(e)^{-1}$.
 Analogous to freely reduced words in the free group on $S$, a \emph{reduced path} in $G$ is a path which does not contain any adjacent pairs of edges such that their labels are inverses.
+
+If $G$ is a directed graph labeled by $S$ and $v \in V(G)$, then \emph{language of $G$ with respect to $v$}, denoted $L(G, v)$, is defined by
+\begin{equation*}
+  L(G, v) = \{ \mu(p) \, | \, p \text{ is a reduced path in } G \text{ from } v \text{ to } v\}.
+\end{equation*}
+The \emph{reduced language}, denoted $\rho(L(G, v))$, is defined by $\rho(L(G, v)) = \{ \rho(w) \, | \, w \in L(G, v) \}$.
 The \emph{core} of a labeled, directed graph $G$ with respect to a vertex $v \in V(G)$, denoted $\Core(G, v)$, is the subgraph of $G$ induced by the set of all edges which are in some reduced path from $v$ to $v$.
 A labeled, directed graph $G$ is a \emph{core graph} with respect to a vertex $v \in V(G)$ if $\Core(G, v) = G$.
 A pair of edges is \emph{foldable} if they have the same label and they share an origin or a terminus.
@@ -103,7 +109,6 @@ Informally, a \emph{fold} is a function which identifies two foldable edges and 
 %% the same freely reduced language
 \emph{Stallings' folding process} is a function, denoted $F$, which operates on labeled, directed graphs.
 It proceeds by repeatedly choosing a foldable pair of edges and folding them until there are no more foldable edges.
-%% TODO define L(G, v) and \rho(L(G, v))
 
 We will utilize the following computational problems.
 These should be thought of as optimization problems, but they are defined as decision problems in order to facilitate proofs of hardness.

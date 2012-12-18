@@ -23,6 +23,8 @@
 \newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
+\newcommand{\pos}{\textnormal{pos}}
+\newcommand{\neg}{\textnormal{neg}}
 \newcommand{\Instance}{\textbf{Instance}: }
 \newcommand{\Question}{\textbf{Question}: }
 \newcommand{\instanceindent}{%
@@ -86,6 +88,7 @@ The \emph{additive density} of $G$, denoted $\delta(G)$, is defined by $\delta(G
 We say $G$ is \emph{labeled} by $S$ if there exists a function $\mu \colon E(G) \to S$.
 If $G$ is a labeled, directed graph, then its \emph{inverse graph}, denoted $\hat{G}$, has the same vertex set and edge set, but wherever there is an edge $(u, v) \in E(G)$ with label $s$ we add the inverse edge $(v, u)$ to $E(\hat{G})$ with label $s^{-1}$.
 The \emph{positive} edges of $\hat{G}$ are the edges with labels in $S$ and the \emph{negative} edges are those with labels in $S^{-1}$.
+If $E$ is a set of directed, labeled edges, we denote the positive edges in $E$ by $\pos(E)$ and the negative edges by $\neg(E)$.
 The \emph{label} of a path $p$, denoted $\mu(p)$, is the sequence of labels of each of its constituent edges.
 We sometimes abuse notation for the sake of convenience and discuss a path in $G$ when what we mean is a path in the subgraph induced by the positive edges of $\hat{G}$ in which edges $e$ with the inverse orientation are allowed, but their labels $\mu(e)$ are read as the corresponding inverse label $\mu(e)^{-1}$.
 Analogous to freely reduced words in the free group on $S$, a \emph{reduced path} in $G$ is a path which does not contain any adjacent pairs of edges such that their labels are inverses.
@@ -193,13 +196,16 @@ We restate in the language of complexity theory a result implicit in \cite{km02}
             & = L(G', v'_0), & \qquad \text{ (by \cite[Lemma~2.9]{km02})}
   \end{align*}
   We know $G'$ has a spanning tree $T$ which is geodesic with respect to $v'_0$ by \cite[Lemma~6.6]{km02}.
-  Let $Y_T = \{[e]_{G'} \, | \, e \in E(G') \setminus E(T) \}$.
+  Let $[v'_0, z]_T$ denote the path from $v'_0$ to $z$ in $T$, for all vertices $z \in V(G')$.
+  Let $[e]$ denote the path which results from the concatenation of paths $[v, o(e)]_T, e, [t(e), v]_T$ for all edges $e \in \pos(E(\hat{G'}) \setminus E(T))$ (in other words, $e$ is a positive edge in $\hat{G}$ not in the spanning tree of $T$).
+  Let $Y_T = \{[e] \, | \, e \in \pos(E(\hat{G'}) \setminus E(T)) \}$.
   We know $L(G', v'_0) = \gen{Y_T}$ by \cite[Lemma~6.1]{km02}, so $\gen{U} = \gen{Y_T}$.
   Furthermore, $Y_T$ is Nielsen reduced by \cite[Proposition~6.7]{km02}, so the rank of $\gen{U}$ equals the rank of $\gen{Y_T}$, which equals $|Y_T|$.
   Observe now that
   \begin{align*}
-    |Y_T| & = |E(G') \setminus E(T)| & \\
-          & = |E(G')| - |E(T)| & \text{ (since } E(T) \subseteq E(G') \text{)} \\
+    |Y_T| & = |\pos(E(\hat{G'}) \setminus E(T))| & \\
+          & = |\pos(E(\hat{G'}))| - |\pos(E(T))| & \text{ (since } E(T) \subseteq E(G') \text{)} \\
+          & = |E(G')| - |E(T)| & \text{ (by construction)} \\
           & = |E(G')| - (|V(G')| - 1) & \text{ (by \autoref{lem:tree})} \\
           & = |E(G')| - |V(G')| + 1 & \\
           & = \delta(G') + 1 & \text{ (by definition of } \delta \text{)}.

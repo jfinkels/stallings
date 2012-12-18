@@ -8,6 +8,7 @@
 \usepackage{complexity}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{calc}
 
 \declaretheorem[numberwithin=section]{theorem}
 \declaretheorem[numberlike=theorem]{corollary}
@@ -22,6 +23,14 @@
 \newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
+\newcommand{\Instance}{\textbf{Instance}: }
+\newcommand{\Question}{\textbf{Question}: }
+\newcommand{\instanceindent}{%
+  \setlength{\leftskip}{\widthof{\Instance}}%
+  \setlength{\parindent}{0pt - \widthof{\Instance}}}
+\newcommand{\questionindent}{%
+  \setlength{\leftskip}{\widthof{\Question}}%
+  \setlength{\parindent}{0pt - \widthof{\Question}}}
 
 \author{Jef{}frey~Finkelstein}
 \title{The Folded Density Problem is \P-complete}
@@ -68,8 +77,13 @@ Two edges (in a multigraph) are \emph{parallel} if they have the same origin and
 A \emph{path from $u$ to $v$} in $G$, or more simply, a \emph{path}, is a finite sequence of edges, $(e_1, e_2, \dotsc, e_n)$, such that $o(e_1) = u$, $t(e_n) = v$, and $t(e_i) = o(e_{i + 1})$ for all $i$ with $1 \leq i \leq n - 1$.
 A \emph{rooted circle} is a path from ``root'' vertex $v \in V(G)$ to the same vertex, along which each intermediate vertex, except possibly $v$, is incident to exactly two edges (namely, the one preceding it in the path and the one following it in the path).
 The directed graph $G$ is a \emph{flower graph} with respect to a vertex $v \in V(G)$ if it equals the union of circles rooted at $v$.
+%% TODO better definitions of minimal spanning trees
+If $G$ is a directed graph, a \emph{tree} $T$ with root $v$ is an acyclic subgraph of $G$ in which there is a path in $T$ from $v$ to every vertex in $V(T)$.
+A tree $T$ with root $v$ is a \emph{spanning tree} for $G$ if there is a path in $T$ from $v$ to every vertex in $V(G)$.
+A spanning tree is \emph{minimal} if no edges can be removed without violating the spanning property.
 The \emph{additive density} of $G$, denoted $\delta(G)$, is defined by $\delta(G) = |E(G)| - |V(G)|$ for all graphs $G$.
-We say $G$ is labeled by $S$ if there exists a function $\mu \colon E(G) \to S$.
+
+We say $G$ is \emph{labeled} by $S$ if there exists a function $\mu \colon E(G) \to S$.
 If $G$ is a labeled, directed graph, then its \emph{inverse graph}, denoted $\hat{G}$, has the same vertex set and edge set, but wherever there is an edge $(u, v) \in E(G)$ with label $s$ we add the inverse edge $(v, u)$ to $E(\hat{G})$ with label $s^{-1}$.
 The \emph{positive} edges of $\hat{G}$ are the edges with labels in $S$ and the \emph{negative} edges are those with labels in $S^{-1}$.
 The \emph{label} of a path $p$, denoted $\mu(p)$, is the sequence of labels of each of its constituent edges.
@@ -77,10 +91,6 @@ We sometimes abuse notation for the sake of convenience and discuss a path in $G
 Analogous to freely reduced words in the free group on $S$, a \emph{reduced path} in $G$ is a path which does not contain any adjacent pairs of edges such that their labels are inverses.
 The \emph{core} of a labeled, directed graph $G$ with respect to a vertex $v \in V(G)$, denoted $\Core(G, v)$, is the subgraph of $G$ induced by the set of all edges which are in some reduced path from $v$ to $v$.
 A labeled, directed graph $G$ is a \emph{core graph} with respect to a vertex $v \in V(G)$ if $\Core(G, v) = G$.
-%% TODO better definitions of minimal spanning trees
-If $G$ is a directed graph, a \emph{tree} $T$ with root $v$ is an acyclic subgraph of $G$ in which there is a path in $T$ from $v$ to every vertex in $V(T)$.
-A tree $T$ with root $v$ is a \emph{spanning tree} for $G$ if there is a path in $T$ from $v$ to every vertex in $V(G)$.
-A spanning tree is \emph{minimal} if no edges can be removed without violating the spanning property.
 A pair of edges is \emph{foldable} if they have the same label and they share an origin or a terminus.
 A directed graph $G$ labeled by $S$ is \emph{folded} if there are no foldable edges.
 In other words, for each vertex $v \in V(G)$ and each symbol $s \in S$, there is at most one edge in $E(G)$ with origin $v$ and label $s$ and there is at most one edge in $E(G)$ with terminus $v$ and label $s$.
@@ -97,19 +107,22 @@ These should be thought of as optimization problems, but they are defined as dec
 \begin{definition}[\FGR]
   \mbox{}
 
-  \textbf{Instance}: finite alphabet $S$, finite set $U \subseteq (S \cup S^{-1})^*$, positive integer $k$.
+  \instanceindent
+  \Instance finite alphabet $S$, finite set $U \subseteq (S \cup S^{-1})^*$, positive integer $k$.
 
-  \textbf{Question}: Does $\gen{U}$ in the free group on $S$ have rank $k$ or less?
+  \questionindent
+  \Question Does $\gen{U}$ in the free group on $S$ have rank $k$ or less?
 \end{definition}
 
-\FGR is well-known to be \P-complete. \cite[Problem~A.8.11]{ghr95}
+\FGR{} is well-known to be \P-complete. \cite[Problem~A.8.11]{ghr95}
 We will use this fact to show the \P-completeness of some related problems.
 In the following decision problems, we ask to compute some properties about the result of executing Stallings' folding process on a particular input.
 
 \begin{definition}[\FD]
   \mbox{}
 
-  \textbf{Instance}: finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
+  \instanceindent
+  \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
 
   \textbf{Question}: Does $F(G)$ have additive density at most $k$?
@@ -118,9 +131,11 @@ In the following decision problems, we ask to compute some properties about the 
 \begin{definition}[\DLF]
   \mbox{}
 
+  \instanceindent
   \textbf{Instance}: finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
 
+  \questionindent
   \textbf{Question}: Is $N^\infty_F(G)$ greater than or equal to $k$? Here, $N^\infty_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a parallel pair of self-loops.
 \end{definition}
 

@@ -27,12 +27,6 @@
 \newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Instance}{\textbf{Instance}: }
 \newcommand{\Question}{\textbf{Question}: }
-\newcommand{\instanceindent}{%
-  \setlength{\leftskip}{2em}%
-  \setlength{\parindent}{-2em}}
-\newcommand{\questionindent}{%
-  \setlength{\leftskip}{2em}%
-  \setlength{\parindent}{-2em}}
 
 \author{Jef{}frey~Finkelstein}
 \title{The Folded Density Problem is \P-complete}
@@ -113,12 +107,11 @@ It proceeds by repeatedly choosing a foldable pair of edges and folding them unt
 We will utilize the following computational problems.
 These should be thought of as optimization problems, but they are defined as decision problems in order to facilitate proofs of hardness.
 \begin{definition}[\FGR]
+  \setlength{\parindent}{0pt}
   \mbox{}
 
-  \instanceindent
   \Instance finite alphabet $S$, finite set $U \subseteq (S \cup S^{-1})^*$, positive integer $k$.
 
-  \questionindent
   \Question Does $\gen{U}$ in the free group on $S$ have rank $k$ or less?
 \end{definition}
 
@@ -127,25 +120,23 @@ We will use this fact to show the \P-completeness of some related problems.
 In the following decision problems, we ask to compute some properties about the result of executing Stallings' folding process on a particular input.
 
 \begin{definition}[\FD]
+  \setlength{\parindent}{0pt}
   \mbox{}
 
-  \instanceindent
   \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
 
-  \questionindent
   \Question Does $F(G)$ have additive density at most $k$?
 \end{definition}
 
 \begin{definition}[\PFolds]
+  \setlength{\parindent}{0pt}
   \mbox{}
 
-  \instanceindent
-  \textbf{Instance}: finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
+  \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
 
-  \questionindent
-  \textbf{Question}: Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
+  \Question Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
 \end{definition}
 
 \section{Results}
@@ -264,12 +255,11 @@ Furthermore, no polynomial time $o(n)$-approximation algorithm exists for the si
 However, the good news is that Stallings' folding process essentially shows that computing a minimal NFA from a (FILL ME IN, SOME VERY RESTRICTED CLASS) NFA can be computed in polynomial time, and the minimal NFA is in fact deterministic!
 
 \begin{definition}[\NDM]
+  \setlength{\parindent}{0pt}
   \mbox{}
 
-  \instanceindent
   \Instance nondeterministic finite state automaton $M$, positive integer $k$.
 
-  \questionindent
   \Question Does there exist a deterministic finite state automaton $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
 \end{definition}
 

@@ -237,9 +237,9 @@ The inherently sequential part of this problem seems to be Stallings' folding pr
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
-The labeled, directed graphs we are considering are very similar to nondeterministic finite state automata (NFA).
-In fact, a labeled, directed graph is folded if and only if the corresponding finite state automaton is deterministic \cite[Remark~2.8]{km02}.
-Intuitively, when the graph is interpreted as an NFA, the \FD{} problem asks if a minimal equivalent deterministic finite state automaton (DFA) minimizes the difference between the number of transitions and the number of states.
+The labeled, directed graphs we are considering are very similar to nondeterministic finite automata (NFA).
+In fact, a labeled, directed graph is folded if and only if the corresponding finite automaton is deterministic \cite[Remark~2.8]{km02}.
+Intuitively, when the graph is interpreted as an NFA, the \FD{} problem asks if a minimal equivalent deterministic finite automaton (DFA) minimizes the difference between the number of transitions and the number of states.
 This may be valuable if implementing a transition in some concrete implementation of a DFA is more expensive than implementing a state.
 Similarly, the \PFolds{} problem asks if a minimal equivalent DFA has eliminated many redundant transitions.
 
@@ -256,9 +256,9 @@ However, the good news is that Stallings' folding process essentially shows that
   \setlength{\parindent}{0pt}
   \mbox{}
 
-  \Instance nondeterministic finite state automaton $M$, positive integer $k$.
+  \Instance nondeterministic finite automaton $M$, positive integer $k$.
 
-  \Question Does there exist a deterministic finite state automaton $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
+  \Question Does there exist a deterministic finite automaton $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
 \end{definition}
 
 \begin{theorem}

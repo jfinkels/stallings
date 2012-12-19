@@ -137,7 +137,7 @@ In the following decision problems, we ask to compute some properties about the 
   \Question Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
 \end{definition}
 
-\section{Results}
+\section{Problems on folded graphs}
 
 We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
 
@@ -236,6 +236,8 @@ The inherently sequential part of this problem seems to be Stallings' folding pr
   \end{align*}
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
+
+\section{Problems on finite automata}
 
 The labeled, directed graphs we are considering are very similar to nondeterministic finite automata (NFA).
 In fact, a labeled, directed graph is folded if and only if the corresponding finite automaton is deterministic \cite[Remark~2.8]{km02}.

@@ -19,8 +19,6 @@
 \newcommand{\FD}{\textsc{Folded Density}}
 \newcommand{\NDM}{\textsc{SOME RESTRICTED CLASS OF NFA-to-DFA Minimization}}
 \newcommand{\PFolds}{\textsc{Parallel Folds}}
-\newcommand{\triple}[3]{\langle #1, #2, #3 \rangle}
-\newcommand{\quint}[5]{\langle #1, #2, #3, #4, #5 \rangle}
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
 \newcommand{\pos}{\textnormal{pos}}
@@ -172,12 +170,12 @@ We restate in the language of complexity theory a result implicit in \cite{km02}
   Therefore, $\FD \in \P$.
 
   To show that \FD{} is \P-hard, we show a logarithmic space many-one reduction from the \P-complete decision problem \FGR{} to \FD.
-  The reduction proceeds as follows on input $\triple{S}{U}{k}$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i$ with $1 \leq i \leq m$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n}$ where $n$ is the length of $u_i$.
+  The reduction proceeds as follows on input $\langle S, U, k \rangle$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i$ with $1 \leq i \leq m$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n}$ where $n$ is the length of $u_i$.
   Create and output a directed graph $G$ which is a flower graph with respect to a distinguished vertex $v_0$.
   There is one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
   Wherever $u$ contains an inverse $s^-1$ of a symbol in $S$, that edge is reversed (that is, $(u, v)$ is replaced with $(v, u)$).
   Each edge of the circle is then labeled (by defining a labeling function $\mu$) with the corresponding symbol in $u$, or its inverse when the edge has been reversed.
-  Output $\quad{S}{G}{\mu}{k - 1}$.
+  Output $\langle S, G, \mu, k - 1 \rangle$.
   Observe that the created graph is a flower graph with center $v_0$ and a core graph with respect to $v_0$.
 
   This function is computable in logarithmic space because a loop over the set $U$ requires $O(\log |U|)$ space, a loop over a word $u \in U$ requires $O(\log |u|)$ space, and writing the adjacency matrix of the graph and the corresponding labels can be done in constant space.

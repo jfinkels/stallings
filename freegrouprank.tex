@@ -237,52 +237,6 @@ The inherently sequential part of this problem seems to be Stallings' folding pr
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
-\section{Problems on finite automata}
-
-The labeled, directed graphs we are considering are very similar to nondeterministic finite automata (NFA).
-In fact, a labeled, directed graph is folded if and only if the corresponding finite automaton is deterministic \cite[Remark~2.8]{km02}.
-Intuitively, when the graph is interpreted as an NFA, the \FD{} problem asks if a minimal equivalent deterministic finite automaton (DFA) minimizes the difference between the number of transitions and the number of states.
-This may be valuable if implementing a transition in some concrete implementation of a DFA is more expensive than implementing a state.
-Similarly, the \PFolds{} problem asks if a minimal equivalent DFA has eliminated many redundant transitions.
-
-Computing a minimal equivalent DFA from an arbitrary NFA is a problem of high computational complexity.
-In general, computing a minimal DFA from an arbitrary NFA may take exponential time \cite{citationneeded}.
-Indeed, even computing a minimal NFA from an arbitrary NFA that has a very limited amount of nondeterminism is \NP-hard \cite[Corollary~3]{bm08}.
-Furthermore, no polynomial time $o(n)$-approximation algorithm exists for the size of a minimal equivalent NFA unless $\P = \PSPACE$ \cite[Theorem~4]{gs05}.
-
-\begin{todo}
-  I'm not convinced about the next statement or the theorem below.
-  Why does this not violate the results of \cite{bm08}?
-\end{todo}
-
-However, the good news is that Stallings' folding process essentially shows that computing a minimal NFA from a centered NFA can be computed in polynomial time, and the minimal NFA is in fact deterministic!
-
-\begin{definition}
-  An NFA $M$ is a \emph{centered NFA} if $M$ has exactly one accepting state which equals the initial state.
-\end{definition}
-
-\begin{definition}[\NDM]
-  \setlength{\parindent}{0pt}
-  \mbox{}
-
-  \Instance centered NFA $M$, positive integer $k$.
-
-  \Question Does there exist a DFA $M'$ with $k$ or fewer states such that $L(M) = L(M')$?
-\end{definition}
-
-\begin{theorem}
-  $\NDM \in \P$.
-\end{theorem}
-\begin{proof}
-  Consider the graph $G$ that underlies the centered NFA $M$ with initial (and accepting) state $q_0$.
-  Run Stallings' folding process on $G$.
-  \begin{todo}
-    Prove that a folding produces the same regular language.
-  \end{todo}
-  The graph which results, call it $G'$, is a folded graph and hence a DFA \cite[Remark~2.8]{km02}.
-  Compare the number of states in $G'$ with $k$ (in polynomial time).
-\end{proof}
-
 %% TODO Use the techniques of recent works for analyzing NFAs with limited
 %% nondeterminism, like \cite{bm08}, \cite{gs05}, and ``Measures of
 %% Nondeterminism in Finite Automata'', to prove analagous results for free

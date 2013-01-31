@@ -15,6 +15,7 @@
 \declaretheorem[numberlike=theorem, style=definition]{definition}
 \declaretheorem[numberlike=theorem, style=definition]{todo}
 
+\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
 \newcommand{\NDM}{\textsc{Centered NFA-to-DFA Minimization}}
@@ -268,6 +269,18 @@ We can provide some further evidence that Stallings' folding process is \P-compl
   \end{align*}
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
+
+\section{About this work}
+
+Copyright 2012, 2013 Jef{}frey Finkelstein.
+
+This work is licensed to you under the Creative Commons Attribution-ShareAlike License 3.0.
+To view a copy of this license, visit its website at \mbox{\url{https://creativecommons.org/licenses/by-sa/3.0/}}.
+
+The \LaTeX{} markup which generated this document is available on the World Wide Web at \mbox{\url{https://github.com/jfinkels/freegrouprank}}.
+It is also licensed under the Creative Commons Attribution-ShareAlike License.
+
+The author can be contacted via email at \email{jeffreyf@bu.edu}.
 
 \bibliographystyle{plain}
 \bibliography{references}

@@ -55,28 +55,31 @@ This is important for developing a thorough understanding of the computational c
 
 \section{Preliminaries}
 
+\subsection{Languages and strings}
+
+A finite set $\Sigma$ is called an \emph{alphabet}.
+If $\Sigma$ is an alphabet, a \emph{word} over $\Sigma$ is a finite sequence of symbols from $\Sigma$.
+The set of all words over $\Sigma$ is denoted $\Sigma^*$.
+If $w$ is a word, the \emph{length} of $w$, denoted $|w|$, is the length of its underlying sequence.
+A \emph{language} is a subset of $\Sigma^*$.
+
 \subsection{Complexity}
 
-If $\Sigma$ is a finite alphabet (that is, a finite set), a \emph{word} over the alphabet $\Sigma$ is a finite sequence of symbols from $\Sigma$.
-The set of all words over $\Sigma$ is denoted $\Sigma^*$.
-A \emph{language} $L$ is a subset of $\Sigma^*$.
 We say a Turing machine $M$ decides a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
 The complexity class \P{} is the class of all languages $L$ that can be decided in polynomial time.
 
 If $L_1$ and $L_2$ are languages, we say there is a \emph{many-one reduction} from $L_1$ to $L_2$ if there is a function $f$ such that $x \in L_1$ if and only if $f(x) \in L_2$, and we write $L_1 \leq_m L_2$.
 If furthermore $f$ is computable by a Turing machine using at most $O(\log n)$ space, we say there is a \emph{logarithmic space many-one reduction} from $L_1$ to $L_2$, and we write $L_1 \leq_m^L L_2$ (\L{} is the class of languages that can be decided in logarithmic space).
-If $A$ is a language in \P{} and there is a logarithmic space many-one reduction from each language in \P{} to $A$, then $A$ is \emph{\P-complete}.
+If there is a logarithmic space many-one reduction from each language in \P{} to a language $A$, then $A$ is \emph{\P-hard}; if furthermore $A$ is in \P, then $A$ is \emph{\P-complete}.
 
 \subsection{Free groups}
 
 If $S$ is an alphabet, we define the set of \emph{formal inverses} for $S$, denoted $S^{-1}$, by $\{ s^{-1} \,|\, s \in S \}$.
 In this case, the symbol $s^{-1}$ is the formal inverse of $s$ and vice versa.
 Let $\Spm$ denote the set $S \cup S^{-1}$.
-A \emph{word} over the alphabet $\Sigma$ is a finite sequence of symbols from $\Sigma$.
-If $w$ is such a word, the \emph{length} of $w$, denoted $|w|$, is the length of its underlying sequence.
-The word $w$ can be written as $s_1s_2\cdots s_n$ where each $s_i \in \Spm$ where $|w| = n$ and $1 \leq i \leq n$.
-If $u$ and $v$ are words over $\Spm$, where $u = u_1 u_2\cdots u_n$ and $v = v_1 v_2 \cdot v_m$ then the \emph{concatenation} of $u$ and $v$, denoted $uv$, is the word $u_1 u_2 \cdots u_n v_1 v_2 \cdots v_m$.
-A word is \emph{freely reduced} if it contains no adjacent symbols which are inverses.
+A word $w$ of length $n$ over $\Spm$ can be written as $s_1s_2\cdots s_n$ where $s_i \in \Spm$ for each $i \in \{1, \dotsc, n\}$.
+If $u$ and $v$ are words over $\Spm$, where $u = u_1 u_2 \dotsb u_n$ and $v = v_1 v_2 \dotsb v_m$, then the \emph{concatenation} of $u$ and $v$, denoted $uv$, is the word $u_1 u_2 \cdots u_n v_1 v_2 \cdots v_m$.
+A word is \emph{freely reduced} if it contains no two adjacent symbols that are inverses.
 The \emph{free group} on $S$ is the set of freely reduced words on $\Spm$ under the operation which concatenates two words then freely reduces the result.
 In this free group, a word $w$ where $w = w_1 w_2 \cdots w_{i - 1} s s^{-1} w_{i + 2} \cdots w_n$ (which is not freely reduced) is equivalent to the freely reduced word $w' = w_1 w_2 \cdots w_{i - 1} w_{i + 2} \cdots w_n$.
 Each word over $\Spm$ has a unique, freely reduced representation (see for example, \cite[Section~I.1]{ls77}).
@@ -88,11 +91,13 @@ The \emph{rank} of a finitely generated subgroup is the cardinality of a generat
 
 \subsection{Graphs}
 
+A two-tuple $(V, E)$ is a \emph{directed graph} if $V$ is a set of vertices and $E$ is a multiset of elements from $V \times V$.
 In this work, we write ``directed graph'' instead of ``directed multigraph''; note that multiple, parallel edges are allowed.
+We also refer to the ``edge set'' of a directed graph when we mean ``edge multiset''.
 If $G$ is a directed graph, we denote the vertex set of $G$ by $V(G)$ and the edge set of $G$ by $E(G)$.
 If $e$ is an edge in a graph and $e = (u, v)$, where $u$ and $v$ are vertices, then the \emph{origin} of $e$, denoted $o(e)$, is defined by $o(e) = u$ and the \emph{terminus} of $e$, denoted $t(e)$, is defined by $t(e) = v$.
 Two edges (in a multigraph) are \emph{parallel} if they have the same origin and terminus.
-A \emph{path from $u$ to $v$} in $G$, or more simply, a \emph{path}, is a finite sequence of edges, $(e_1, e_2, \dotsc, e_n)$, such that $o(e_1) = u$, $t(e_n) = v$, and $t(e_i) = o(e_{i + 1})$ for all $i$ with $1 \leq i \leq n - 1$.
+A \emph{path from $u$ to $v$} in $G$, or more simply, a \emph{path}, is a finite sequence of edges, $(e_1, e_2, \dotsc, e_n)$, such that $o(e_1) = u$, $t(e_n) = v$, and $t(e_i) = o(e_{i + 1})$ for all $i \in \{1, \dotsc, n - 1\}$.
 A \emph{rooted circle} is a path from ``root'' vertex $v \in V(G)$ to the same vertex, along which each intermediate vertex, except possibly $v$, is incident to exactly two edges (namely, the one preceding it in the path and the one following it in the path).
 The directed graph $G$ is a \emph{flower graph} with respect to a vertex $v \in V(G)$ if it equals the union of circles rooted at $v$.
 %% TODO better definitions of minimal spanning trees
@@ -111,7 +116,7 @@ Analogous to freely reduced words in the free group on $S$, a \emph{reduced path
 
 \subsection{Languages of labeled graphs}
 
-If $G$ is a directed graph labeled by $S$ and $v \in V(G)$, then \emph{language of $G$ with respect to $v$}, denoted $L(G, v)$, is defined by
+If $G$ is a directed graph labeled by $S$ and $v \in V(G)$, then the \emph{language of $G$ with respect to $v$}, denoted $L(G, v)$, is defined by
 \begin{equation*}
   L(G, v) = \{ \mu(p) \, | \, p \text{ is a reduced path in } G \text{ from } v \text{ to } v\}.
 \end{equation*}
@@ -122,7 +127,7 @@ A pair of edges is \emph{foldable} if they have the same label and they share an
 A directed graph $G$ labeled by $S$ is \emph{folded} if there are no foldable edges.
 In other words, for each vertex $v \in V(G)$ and each symbol $s \in S$, there is at most one edge in $E(G)$ with origin $v$ and label $s$ and there is at most one edge in $E(G)$ with terminus $v$ and label $s$.
 Stated another way, $G$ is folded if there is no vertex $v \in V(G)$ such that $v$ has two (or more) in-edges with the same label or two (or more) out-edges with the same label.
-Informally, a \emph{fold} is a function which identifies two foldable edges and their shared incident vertex.
+Informally, a \emph{fold} is a function which identifies not only two foldable edges but also the vertex opposite from their shared incident vertex.
 %% TODO state that every graph has a folded representative, F(G) that produces
 %% the same freely reduced language
 \emph{Stallings' folding process} is a function, denoted $F$, which operates on labeled, directed graphs.
@@ -142,7 +147,7 @@ These should be thought of as optimization problems, but they are defined as dec
 \end{definition}
 
 \FGR{} is \P-complete \cite[Theorem~4.9]{am84} (see also \cite[Problem~A.8.11]{ghr95}).
-In fact, the algorithm which shows that this problem is decidable in polynomial time is constructive; not only does it compute the rank of $\gen{U}$, it does so by also computing a set $V$ such that $V$ is Nielsen reduced and $\gen{U} = \gen{V}$.
+In fact, the algorithm that shows that this problem is decidable in polynomial time is constructive; not only does it compute the rank of $\gen{U}$, it does so by also computing a set $V$ such that $V$ is Nielsen reduced and $\gen{U} = \gen{V}$.
 We will use this fact to show the \P-completeness of some related problems.
 In the following decision problems, we ask to compute some properties about the result of executing Stallings' folding process on a particular input.
 
@@ -200,7 +205,7 @@ The proof of correctness in the proof of this theorem relies heavily on the resu
   Therefore, $\FD \in \P$.
 
   To show that \FD{} is \P-hard, we show a logarithmic space many-one reduction from the \P-complete decision problem \FGR{} to \FD.
-  The reduction proceeds as follows on input $\langle S, U, k \rangle$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i$ with $1 \leq i \leq m$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n}$ where $n$ is the length of $u_i$.
+  The reduction proceeds as follows on input $\langle S, U, k \rangle$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i \in \{1, \dotsc, m\}$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n_i}$ where $n_i$ is the length of $u_i$.
   Create and output a directed graph $G$ which is a flower graph with respect to a distinguished vertex $v_0$.
   There is one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
   Wherever $u$ contains an inverse $s^{-1}$ of a symbol in $S$, that edge is reversed (that is, $(u, v)$ is replaced with $(v, u)$).

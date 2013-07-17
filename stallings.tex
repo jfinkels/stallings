@@ -25,8 +25,6 @@
 \newcommand{\pos}{\textnormal{pos}}
 \newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Spm}{S^{\pm1}}
-\newcommand{\Instance}{\textbf{Instance}: }
-\newcommand{\Question}{\textbf{Question}: }
 
 \author{Jef{}frey~Finkelstein}
 \title{Stallings' Folding Process is Inherently Sequential}
@@ -138,12 +136,11 @@ It proceeds by repeatedly choosing a foldable pair of edges (say, the lexicograp
 We will utilize the following computational problems.
 These should be thought of as optimization problems, but they are defined as decision problems in order to facilitate proofs of hardness.
 \begin{definition}[\FGR]
-  \setlength{\parindent}{0pt}
-  \mbox{}
-
-  \Instance finite alphabet $S$, finite set $U$ of freely reduced words over $\Spm$, positive integer $k$.
-
-  \Question Does $\gen{U}$ in the free group on $S$ have rank $k$ or less?
+  \mbox{} \\
+  \begin{tabular}{r p{9.5cm}}
+    \textbf{Instance:} & finite alphabet $S$, finite set $U$ of freely reduced words over $\Spm$, positive integer $k$. \\
+    \textbf{Question:} & Does $\gen{U}$ in the free group on $S$ have rank $k$ or less?
+  \end{tabular}
 \end{definition}
 
 \FGR{} is \P-complete \cite[Theorem~4.9]{am84} (see also \cite[Problem~A.8.11]{ghr95}).
@@ -152,23 +149,21 @@ We will use this fact to show the \P-completeness of some related problems.
 In the following decision problems, we ask to compute some properties about the result of executing Stallings' folding process on a particular input.
 
 \begin{definition}[\FD]
-  \setlength{\parindent}{0pt}
-  \mbox{}
-
-  \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
+  \mbox{} \\
+  \begin{tabular}{r p{9.5cm}}
+    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
-
-  \Question Does $F(G)$ have additive density at most $k$?
+    \textbf{Question:} & Does $F(G)$ have additive density at most $k$?
+  \end{tabular}
 \end{definition}
 
 \begin{definition}[\PFolds]
-  \setlength{\parindent}{0pt}
-  \mbox{}
-
-  \Instance finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$.
+  \mbox{} \\
+  \begin{tabular}{r p{9.5cm}}
+    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
   %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
-
-  \Question Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
+    \textbf{Question:} & Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
+  \end{tabular}
 \end{definition}
 
 \section{Completeness results}

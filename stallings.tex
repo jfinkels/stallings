@@ -204,7 +204,7 @@ The proof of correctness in the proof of this theorem relies heavily on the resu
   The reduction proceeds as follows on input $\langle S, U, k \rangle$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i \in \{1, \dotsc, m\}$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n_i}$ where $n_i$ is the length of $u_i$.
   Create and output a directed graph $G$ which is a flower graph with respect to a distinguished vertex $v_0$.
   There is one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
-  Wherever $u$ contains an inverse $s^{-1}$ of a symbol in $S$, that edge is reversed (that is, $(u, v)$ is replaced with $(v, u)$).
+  Wherever $u$ contains an inverse $s^{-1}$ of a symbol in $S$, that edge is reversed (that is, $(v, w)$ is replaced with $(w, v)$).
   Each edge of the circle is then labeled (by defining a labeling function $\mu$) with the corresponding symbol in $u$, or its inverse when the edge has been reversed.
   Output $\langle S, G, \mu, k - 1 \rangle$.
   Observe that the created graph is a flower graph with center $v_0$ and a core graph with respect to $v_0$.

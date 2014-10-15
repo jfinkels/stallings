@@ -1,21 +1,70 @@
+%% stallings.tex - Stallings folding algorithm is P-complete
+%%
+%% Copyright 2012, 2013, 2014 Jeffrey Finkelstein.
+%%
+%% This LaTeX markup document is made available under the terms of the Creative
+%% Commons Attribution-ShareAlike 4.0 International License,
+%% https://creativecommons.org/licenses/by-sa/4.0/.
 \documentclass{article}
 
-% Package `amsthm` and `thmtools` must come before package `hyperref`.
-\usepackage{amsthm}
-\usepackage{thmtools}
-% Package `hyperref` must come before package `complexity`.
-\usepackage[pdftitle={Stallings' Folding Process is Inherently Sequential}, pdfauthor={Jeffrey Finkelstein}]{hyperref}
-\usepackage{complexity}
 \usepackage{amsmath}
 \usepackage{amssymb}
+%% This must come before hyperref.
+\usepackage{amsthm}
+%% This is strongly recommended by biblatex.
+\usepackage[english]{babel}
+\usepackage[backend=biber]{biblatex}
+\usepackage[T1]{fontenc}
+%% This must come before csquotes.
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+%% This is strongly recommended by biblatex.
+\usepackage{csquotes}
+%% This must come before hyperref.
+\usepackage{thmtools}
+%% This must come before complexity.
+\usepackage{hyperref}
+\usepackage{complexity}
+\usepackage[firstpage]{draftwatermark}
+\usepackage{microtype}
+\usepackage{textcomp}
 
+\LoadMicrotypeFile{cmr}
+\SetProtrusion
+    [load=lmr-T1]
+    {encoding=T1, family=lmr}
+    {
+      \textquotedblright = {,1000},
+      \textquotedblleft = {1000,},
+      {[} = {1000,},
+      {]} = {,1000},
+      {,} = {,1000},
+      {:} = {,1000},
+      {;} = {,1000},
+      {.} = {,1000}
+    }
+
+%% Set the ``work-in-progress'' watermark for the first page.
+\SetWatermarkLightness{0.9}
+\SetWatermarkText{Work-in-progress}
+\SetWatermarkFontSize{3.5cm}
+
+%% Set the title and author of the PDF file.
+\hypersetup{pdftitle={Stallings' Folding Process is Inherently Sequential}, pdfauthor={Jeffrey Finkelstein}}
+
+%% Declare the bibliography file.
+\addbibresource{stallings.bib}
+
+%% Declare theorem-like environments.
 \declaretheorem[numberwithin=section]{theorem}
 \declaretheorem[numberlike=theorem]{corollary}
 \declaretheorem[numberlike=theorem]{lemma}
 \declaretheorem[numberlike=theorem, style=definition]{definition}
 \declaretheorem[numberlike=theorem, style=definition]{todo}
 
-\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+%% Custom commands are declared here.
+\newcommand{\email}[1]{\textlangle\href{mailto:#1}{\nolinkurl{#1}}\textrangle}
+%\newcommand{\todo}[1]{\textbf{TODO #1}}
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
 \newcommand{\NDM}{\textsc{Centered NFA-to-DFA Minimization}}
@@ -26,17 +75,25 @@
 \newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Spm}{S^{\pm1}}
 
-\author{Jef{}frey~Finkelstein}
+%% Redefine the footnote environment so it has no reference and no number.
+\long\def\symbolfootnote#1{\begingroup%
+\def\thefootnote{\fnsymbol{footnote}}\footnotetext{#1}\endgroup}
+
+%% Define the author, title, and date for the document.
+\author{Jeffrey~Finkelstein\\ Computer Science Department, Boston University}
 \title{Stallings' Folding Process is Inherently Sequential}
-\date{\today}
 
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
-  We show that Stallings' folding process is \P-complete, and hence inherently sequential.
-\end{abstract}
+\symbolfootnote{%
+  Copyright 2012, 2013, 2014 Jeffrey~Finkelstein \email{jeffreyf@bu.edu}.
+
+  This document is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License, which is available at \mbox{\url{https://creativecommons.org/licenses/by-sa/4.0/}}.
+  The \LaTeX{} markup that generated this document can be downloaded from its website at \mbox{\url{https://github.com/jfinkels/document}}.
+  The markup is distributed under the same license.
+}
 
 \section{Introduction}
 
@@ -276,19 +333,6 @@ We can provide some further evidence that Stallings' folding process is \P-compl
   Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
-\section{About this work}
-
-Copyright 2012, 2013 Jef{}frey Finkelstein.
-
-This work is licensed to you under the Creative Commons Attribution-ShareAlike License 3.0.
-To view a copy of this license, visit its website at \mbox{\url{https://creativecommons.org/licenses/by-sa/3.0/}}.
-
-The \LaTeX{} markup which generated this document is available on the World Wide Web at \mbox{\url{https://github.com/jfinkels/stallings}}.
-It is also licensed under the Creative Commons Attribution-ShareAlike License.
-
-The author can be contacted via email at \email{jeffreyf@bu.edu}.
-
-\bibliographystyle{plain}
-\bibliography{references}
+\printbibliography
 
 \end{document}

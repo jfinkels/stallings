@@ -36,6 +36,7 @@
     {
       \textquotedblright = {,1000},
       \textquotedblleft = {1000,},
+      {'} = {,1000},
       {[} = {1000,},
       {]} = {,1000},
       {,} = {,1000},
@@ -58,6 +59,7 @@
 %% Declare theorem-like environments.
 \declaretheorem[numberwithin=section]{theorem}
 \declaretheorem[numberlike=theorem]{corollary}
+\declaretheorem[numberlike=theorem]{conjecture}
 \declaretheorem[numberlike=theorem]{lemma}
 \declaretheorem[numberlike=theorem, style=definition]{definition}
 \declaretheorem[numberlike=theorem, style=definition]{todo}
@@ -67,11 +69,13 @@
 %\newcommand{\todo}[1]{\textbf{TODO #1}}
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FD}{\textsc{Folded Density}}
+\newcommand{\Flow}{\textsc{Flow($F$)}}
+\newcommand{\BS}{\textsc{Bitwise Stallings}}
 \newcommand{\NDM}{\textsc{Centered NFA-to-DFA Minimization}}
 \newcommand{\PFolds}{\textsc{Parallel Folds}}
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
-\newcommand{\pos}{\textnormal{pos}}
+\DeclareMathOperator{\pos}{pos}
 \newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Spm}{S^{\pm1}}
 
@@ -185,14 +189,17 @@ Stated another way, $G$ is folded if there is no vertex $v \in V(G)$ such that $
 Informally, a \emph{fold} is a function which identifies not only two foldable edges but also the vertex opposite from their shared incident vertex.
 %% TODO state that every graph has a folded representative, F(G) that produces
 %% the same freely reduced language
-\emph{Stallings' folding process} is a function, denoted $F$, which operates on labeled, directed graphs.
+\emph{Stallings' folding process}, defined in \autocite[Algorithm~5.4]{stallings83}, is a function, denoted $F$, that operates on labeled, directed graphs.
 It proceeds by repeatedly choosing a foldable pair of edges (say, the lexicographically first pair) and folding them until there are no more foldable edges.
+\begin{theorem}[{\autocite{touikan06}}]\label{thm:finfp}
+  Stallings' folding process, $F$, is in $\FP$.
+\end{theorem}
 
 % TODO Move these definitions into the results section?
 \subsection{Computational problems}
 
 We will utilize the following computational problems.
-These should be thought of as optimization problems, but they are defined as decision problems in order to facilitate proofs of hardness.
+
 \begin{definition}[\FGR]
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
@@ -201,16 +208,15 @@ These should be thought of as optimization problems, but they are defined as dec
   \end{tabular}
 \end{definition}
 
+(\FGR{} should be thought of as an optimization problem, but is defined as a decision problem in order to facilitate proofs of hardness).
 \FGR{} is \P-complete \cite[Theorem~4.9]{am84} (see also \cite[Problem~A.8.11]{ghr95}).
 In fact, the algorithm that shows that this problem is decidable in polynomial time is constructive; not only does it compute the rank of $\gen{U}$, it does so by also computing a set $V$ such that $V$ is Nielsen reduced and $\gen{U} = \gen{V}$.
-We will use this fact to show the \P-completeness of some related problems.
-In the following decision problems, we ask to compute some properties about the result of executing Stallings' folding process on a particular input.
+We will use this fact to show the $\P$-completeness of some related problems, and ultimately Stallings' folding process itself.
 
 \begin{definition}[\FD]
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
     \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
-  %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
     \textbf{Question:} & Does $F(G)$ have additive density at most $k$?
   \end{tabular}
 \end{definition}
@@ -219,18 +225,34 @@ In the following decision problems, we ask to compute some properties about the 
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
     \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
-  %a vertex $v \in V(G)$ such that $G$ is a flower graph with respect to $v$ and a core graph with respect to $v$,
-    \textbf{Question:} & Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ which are folds of a pair of parallel edges.
+    \textbf{Question:} & Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ that are folds of a pair of parallel edges.
   \end{tabular}
 \end{definition}
 
+Suppose $M$ is an arbitary RAM.
+
+\begin{todo}
+  Define RAM flow function, define RAM.
+\end{todo}
+
+\begin{definition}[\textsc{Flow($M$)}]
+  \mbox{} \\
+  \begin{tabular}{r p{9.5cm}}
+    \textbf{Instance:} & binary string $x$, positive binary integer $i$, bit $j$. \\
+    %% \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, positive binary integer $i$, bit $j$. \\
+    \textbf{Question:} & Does the $i$th bit of $f_M(x)$ equal $j$?
+  \end{tabular}
+\end{definition}
+
+We say the function computed by $M$ is \emph{inherently sequential} if \textsc{Flow($M$)} is $\P$-complete (\autocite[Definition~8.2.2]{ghr95}).
+
+% TODO bad section title
 \section{Completeness results}
 
 We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
 The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
 %% This can be found in, for example, Mathematics for Computer Science by
 %% Leighton, Meyer, and Lehman.
-
 \begin{lemma}\label{lem:tree}
   Let $G$ be a graph with vertex set $V$ and edge set $E$.
   If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
@@ -251,29 +273,37 @@ The lemma holds for all trees, but we state it for the specific case of minimal 
 \end{proof}
 
 We restate in the language of complexity theory a result implicit in \cite{km02}.
-The proof of correctness in the proof of this theorem relies heavily on the results from that work; we have provided references to the appropriate theorems so that the reader can easily verify our proof.
-\begin{theorem}\label{thm:fdpcomplete}
-  \FD{} is \P-complete, even when the graph is a both a flower graph and a core graph with respect to a distinguished vertex.
-\end{theorem}
-\begin{proof}
-  Stallings' folding process \cite[Algorithm~5.4]{stallings83} is an algorithm which computes the function $F$; it can be implemented in $O(n \log^* n)$ time \cite{touikan06}.
-  After computing $F(G)$, it is simple to compare the number of edges in the graph to the number of vertices plus $k$.
-  Therefore, $\FD \in \P$.
+The proofs of the following lemma and theorems rely heavily on the results from that work; please see the referenced lemmas and propositions for more information.
 
-  To show that \FD{} is \P-hard, we show a logarithmic space many-one reduction from the \P-complete decision problem \FGR{} to \FD.
-  The reduction proceeds as follows on input $\langle S, U, k \rangle$ where $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i \in \{1, \dotsc, m\}$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n_i}$ where $n_i$ is the length of $u_i$.
-  Create and output a directed graph $G$ which is a flower graph with respect to a distinguished vertex $v_0$.
-  There is one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
-  Wherever $u$ contains an inverse $s^{-1}$ of a symbol in $S$, that edge is reversed (that is, $(v, w)$ is replaced with $(w, v)$).
-  Each edge of the circle is then labeled (by defining a labeling function $\mu$) with the corresponding symbol in $u$, or its inverse when the edge has been reversed.
-  Output $\langle S, G, \mu, k - 1 \rangle$.
-  Observe that the created graph is a flower graph with center $v_0$ and a core graph with respect to $v_0$.
+\begin{lemma}\label{lem:main}
+  For each finite alphabet $S$ and finite set $U$ of freely reduced words over $\Spm$, there is a graph $G$ and a label function $\mu \colon E(G) \to S$ such that
+  \begin{enumerate}
+  \item $G$ and $\mu$ are computable in logarithmic space with respect to the size of $S$ and $U$,
+  \item $G$ is a flower graph and a core graph (with respect to the same vertex),
+  \item there is a set $Y$ of words induced by paths in $F(G)$ such that
+    \begin{itemize}
+    \item the rank of $\gen{U}$ equals $|Y|$,
+    \item $|Y|$ is computable in logarithmic space with respect to the size of $F(G)$.
+    \end{itemize}
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \begin{todo}This needs a picture here.\end{todo}
+  Suppose $U$ is a finite set of words $\{u_1, u_2, \dotsc, u_m\}$ and for each $i \in \{1, \dotsc, m\}$ we have $u_i = u_{i, 1}u_{i, 2}\dotsb u_{i, n_i}$ where $n_i$ is the length of $u_i$.
+  Construct the directed graph $G$ as follows.
+  Create a vertex $v_0$, which will be the ``root'' of the flower.
+  Create one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
+  Each edge of the circle is then labeled with the corresponding symbol in $u$.
+  Wherever the graph contains a label $s^{-1}$, the inverse of a symbol $s$ in $S$, that edge is reversed (that is, $(v, w)$ is replaced with $(w, v)$) and we replace the label $s^{-1}$ with the label $s$ on the reversed edge.
 
   This function is computable in logarithmic space because a loop over the set $U$ requires $O(\log |U|)$ space, a loop over a word $u \in U$ requires $O(\log |u|)$ space, and writing the adjacency matrix of the graph and the corresponding labels can be done in constant space.
-  It remains to show the correctness of the reduction.
-  Our goal is to show that $\gen{U}$ has rank at most $k$ if and only if the graph $G$ produced by the reduction has the property that $\delta(F(G)) \leq k - 1$, or in other words, that $\delta(F(G)) + 1 \leq k$.
+  Thus, item 1 is satisfied.
 
-  First we examine the properties of the graph $G$ produced by the reduction.
+  Since it is the union of circles rooted at $v_0$, the graph $G$ is a flower graph with respect to $v_0$.
+  Since each circle corresponds to a word in $U$, and each word in $U$ is freely reduced, $G$ is also a core graph with respect to $v_0$.
+  Thus, item 2 is satisfied
+
+  Now in order to construct $Y$, we examine the properties of the graph $G$ under $F$, Stalling's folding process.
   Let $G' = F(G)$ and $v'_0 = F_G(v)$, where $F_G(v)$ denotes the image of $v$ under the sequence of foldings produced by $F$.
   Now
   \begin{align*}
@@ -282,56 +312,161 @@ The proof of correctness in the proof of this theorem relies heavily on the resu
             & = L(G', v'_0), & \qquad \text{ (by \cite[Lemma~2.9]{km02})}
   \end{align*}
   We know $G'$ has a spanning tree $T$ which is geodesic with respect to $v'_0$ by \cite[Lemma~6.6]{km02}.
-  Let $[v'_0, z]_T$ denote the path from $v'_0$ to $z$ in $T$, for all vertices $z \in V(G')$.
-  Let $[e]$ denote the path which results from the concatenation of paths $[v, o(e)]_T, e, [t(e), v]_T$ for all edges $e \in \pos(E(\hat{G'}) \setminus E(T))$ (in other words, $e$ is a positive edge in $\hat{G}$ not in the spanning tree of $T$).
-  Let $Y_T = \{[e] \, | \, e \in \pos(E(\hat{G'}) \setminus E(T)) \}$.
-  We know $L(G', v'_0) = \gen{Y_T}$ by \cite[Lemma~6.1]{km02}, so $\gen{U} = \gen{Y_T}$.
-  Furthermore, $Y_T$ is Nielsen reduced by \cite[Proposition~6.7]{km02}, so the rank of $\gen{U}$ equals the rank of $\gen{Y_T}$, which equals $|Y_T|$.
-  Observe now that
-  \begin{align*}
-    |Y_T| & = |\pos(E(\hat{G'}) \setminus E(T))| & \\
-          & = |\pos(E(\hat{G'}))| - |\pos(E(T))| & \text{ (since } E(T) \subseteq E(\hat{G'}) \text{)} \\
-          & = |E(G')| - |E(T)| & \text{ (by construction)} \\
-          & = |E(G')| - (|V(G')| - 1) & \text{ (by \autoref{lem:tree})} \\
-          & = |E(G')| - |V(G')| + 1 & \\
-          & = \delta(G') + 1 & \text{ (by definition of } \delta \text{)}.
-  \end{align*}
-  Finally, we have that the rank of $\gen{U}$ equals $\delta(G') + 1$.
-  With this equality, we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $\delta(G') + 1 \leq k$, which is what we intended to show.
+  For any vertex $z$ in $V(G')$, let $[v'_0, z]_T$ denote the path from $v'_0$ to $z$ within the spanning tree $T$.
+  \begin{todo}
+    Remove the positive business here.
+  \end{todo}
+  For each edge $e$ in $\pos(E(\hat{G'}) \setminus E(T))$ (in other words, $e$ is a positive edge in $\hat{G}$ not in the spanning tree of $T$), let $[e]$ denote the path which results from the concatenation of paths $[v'_0, o(e)]_T, e, [t(e), v'_0]_T$.
+  Define $Y$ as
+  \begin{equation*}
+    Y = \left\{\left[e\right] \, \middle| \, e \in \pos\left(E\left(\hat{G'}\right) \setminus E(T)\right) \right\}.
+  \end{equation*}
+  If we treat $Y$ as a set of words over $S$ induced by the labels of the paths, then $L(G', v'_0) = \gen{Y}$ by \cite[Lemma~6.1]{km02}, so $\gen{U} = \gen{Y}$.
+  Since, $\gen{U} = \gen{Y}$, their ranks are equal.
+  Finally, the rank of $\gen{Y}$ is $|Y|$, since $Y$ is Nielsen reduced by \cite[Proposition~6.7]{km02}.
+  Therefore, the rank of $\gen{U}$ equals $|Y|$.
+
+  Computing $|Y|$ can be done by counting the number of (positive) edges in $G'$ not in $T$.
+  Computing $T$ from $G'$ can be done recursively in \ldots (implicit in \autocite[Lemma~6.6]{km02}).
 \end{proof}
 
-Like several other \P-complete decision problems, \FD{} asks a question whose answer requires computing an inherently sequential function.
-The inherently sequential part of this problem seems to be Stallings' folding process, which consists of a sequence of steps, each of which depends on the result of the previous.
-We therefore conclude that Stallings' folding process itself should be considered an \emph{inherently sequential algorithm}, as defined in \cite[Chapter~8]{ghr95}.
-Consider for comparison the \textsc{Lexicographically First Maximal Path} problem: given an undirected graph $G$ and vertices $s$ and $t$, decide if $t$ is in the lexicographically first maximal path in $G$ beginning at $s$.
-This problem is \P-complete \cite[Problem~A.3.1]{ghr95}, and the greedy lexicographical search algorithm itself is the essence of the problem's inherent sequentiality.
-
-We can provide some further evidence that Stallings' folding process is \P-complete.
-
-\begin{theorem}
-  \PFolds{} is \P-complete, even when the graph is a both a flower graph and a core graph with respect to a distinguished vertex.
+\begin{theorem}\label{thm:fdpcomplete}
+  \FD{} is $\P$-complete, even when the graph is a both a flower graph and a core graph (with respect to the same vertex).
 \end{theorem}
 \begin{proof}
-  Like for \FD, computing Stallings' folding process and counting the number of folds that occur on a pair of parallel edges places this problem in \P.
-  We show a logarithmic space many-one reduction from \FD{} with graphs that are both flower graphs and core graphs with respect to a distinguished vertex to \PFolds{} with the same restriction to complete the proof.
-  The reduction is the identity mapping on all components of the instance except for the integer $k$, which is mapped to $\delta(G) - k$.
-  Counting the number of vertices and number of edges in $G$, then performing two subtractions can be performed in logarithmic space.
-  It remains to show the correctness of the reduction.
+  By \autoref{thm:finfp}, $F(S, G, \mu)$ is computable in polynomial time.
+  Computing the additive density of a graph can be done in linear time, as can comparison with an integer, so \FD{} is in $\P$.
 
+  To show that \FD{} is $\P$-hard, we show a logarithmic space many-one reduction from the $\P$-complete decision problem \FGR{} to \FD{}.
+  The reduction is $\langle S, U, k \rangle \mapsto \langle S, G, \mu, k - 1 \rangle$, where $G$ and $\mu$ are the graph and label function guaranteed by \autoref{lem:main}.
+  This reduction is computable in logarithmic space by that lemma as well.
+
+  Let $Y$ be the set constructed in \autoref{lem:main} such that the rank of $\gen{U}$ equals $|Y|$.
+  In order to show that the reduction is correct, it suffices to show that the additive density of $F(S, G, \mu)$ equals $|Y| - 1$.
+  The set $Y$ is defined as
+  \begin{equation*}
+    Y = \left\{\left[e\right] \, \middle| \, e \in \pos\left(E\left(\hat{G'}\right) \setminus E(T)\right) \right\},
+  \end{equation*}
+  where $G' = F(S, G, \mu)$ and $T$ is a spanning tree for $G'$.
+  Now
+  \begin{align*}
+    |Y| & = |\pos(E(\hat{G'}) \setminus E(T))| & \\
+    & = |\pos(E(\hat{G'}))| - |\pos(E(T))| & \text{ (since } E(T) \subseteq E(\hat{G'}) \text{)} \\
+    & = |E(G')| - |E(T)| & \text{ (by construction)} \\
+    & = |E(G')| - (|V(G')| - 1) & \text{ (by \autoref{lem:tree})} \\
+    & = |E(G')| - |V(G')| + 1 & \\
+    & = \delta(G') + 1 & \text{ (by definition of } \delta \text{)}.
+  \end{align*}
+  With this equality, we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $\delta(G') + 1 \leq k$.
+\end{proof}
+
+\begin{theorem}
+  \PFolds{} is $\P$-complete, even when the graph is a both a flower graph and a core graph (with respect to the same vertex).
+\end{theorem}
+\begin{proof}
+  Like for \FD, computing Stallings' folding process and counting the number of folds that occur on a pair of parallel edges places this problem in $\P$.
+  We show a logarithmic space many-one reduction from the \FD{} problem on graphs that are both flower graphs and core graphs to \PFolds{}.
+  The reduction is $\langle S, G, \mu, k \rangle \mapsto \langle S, G, \mu, \delta(G) - k \rangle$.
+  Counting the number of vertices and number of edges in $G$, then performing two subtractions can be performed in logarithmic space.
+
+  It remains to show the correctness of the reduction.
   Each fold in Stallings' folding process decreases the number of edges in the final graph by one.
   Each fold decreases the number of vertices in the final graph by one, unless the fold operates on two parallel edges with the same label (that is, two edges with the same origin, terminus, and label), in which case, the number of vertices remains unchanged.
   (This includes folds of double self-loops.)
-  Let $N_F(G)$ be the number of folds when Stallings' folding process is run on input $G$, and let $N^\|_F(G)$ be the number of those folds which are folds of a pair of a parallel edges.
-  It follows that $|E(F(G))| = |E(G)| - N_F(G)$ and $|V(F(G))| = |V(G)| - (N_F(G) - N^\|_F(G))$.
+  Let $N_F(S, G, \mu)$ be the number of folds when Stallings' folding process is run on input $(S, G, \mu)$, and let $N^\|_F(S, G, \mu)$ be the number of those folds which are folds of a pair of a parallel edges.
+  If $G' = F(S, G, \mu)$, it follows that $|E(G')| = |E(G)| - N_F(S, G, \mu)$ and $|V(G')| = |V(G)| - (N_F(S, G, \mu) - N^\|_F(S, G, \mu))$.
   Hence
   \begin{align*}
-    \delta(F(G)) & = |E(F(G))| - |V(F(G))| \\
-                 & = (|E(G)| - N_F(G)) - (|V(G) - (N_F(G) - N^\|_F(G))) \\
-                 & = (|E(G)| - |V(G)|) - N_F(G) + N_F(G) - N^\|_F(G) \\
-                 & = \delta(G) - N^\|_F(G).
+    \delta(G') & = |E(G')| - |V(G')| \\
+    & = (|E(G)| - N_F(S, G, \mu)) - (|V(G)| - (N_F(S, G, \mu) - N^\|_F(S, G, \mu))) \\
+    & = (|E(G)| - |V(G)|) - N_F(S, G, \mu) + N_F(S, G, \mu) - N^\|_F(S, G, \mu) \\
+    & = \delta(G) - N^\|_F(S, G, \mu).
   \end{align*}
-  Therefore, $\delta(F(G)) \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
+  Therefore, $\delta(G') \leq k \iff \delta(G) - N^\|_F(S, G, \mu) \leq k \iff N^\|_F(S, G, \mu) \geq \delta(G) - k$.
 \end{proof}
+
+\begin{theorem}\label{thm:fpcomplete}
+  Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.
+  More generally, Stallings' folding process is $\FP$-complete.
+\end{theorem}
+\begin{todo}
+  Definition of $\FP$-complete.
+\end{todo}
+\begin{proof}
+  As stated in the introduction, Stallings' folding process is in $\FP$.
+  In order to show that $F$ is hard for $\P$, it suffices to show a logarithmic space single query Turing reduction from \FD{} to $F$.
+  The following logarithmic space Turing machine with access to an oracle for $F$ decides \FD{}.
+  On input $\langle S, G, \mu, k \rangle$,
+  \begin{itemize}
+  \item query $F$ on $\langle S, G, \mu \rangle$ to get graph $G'$ and label function $\mu'$,
+  \item compute $|Y|$ as in \autoref{lem:main},
+  \item accept if and only if $|Y| \geq k$.
+  \end{itemize}
+  Since the rank of $\gen{U}$ equals $|Y|$, the correctness of the reduction follows.
+\end{proof}
+
+\begin{lemma}\label{lem:nonadaptive}
+  Suppose $f$ is a function and define $B_f$ by
+  \begin{equation*}
+    B_f = \{ \langle x, i, b \rangle | \text{the } i \text{th bit of } f(x) \text{ is } b \}.
+  \end{equation*}
+  If $f$ is complete for $\FP$ under logarithmic space single query Turing reductions, then $B_f$ is complete for $\P$ under logarithmic space nonadaptive Turing reductions.
+\end{lemma}
+\begin{proof}
+  Let $L$ be an arbitrary language in $\P$.
+  We know that there is a logarithmic space Turing machine $M$ that decides $L$ while making a single query to oracle $f$.
+  Assume without loss of generality that the machine makes its query at the beginning of the computation (this can be done by doing any preprocessing required by $M$ within the reduction).
+  Construct machine $M'$ to decide $L$ with oracle access to $B_f$.
+  The machine $M'$ simulates $M$, but replaces its single query $x$ with $p(|x|)$ queries of the form $\langle x, i, 1 \rangle$, one for each $i$ in $\{1, \dotsc, p(|x|) \}$, where $p$ is the polynomial that bounds the running time of $f$.
+  Whenever the oracle responds to query $\langle x, i, 1 \rangle$ with a $1$, we know the $i$th bit of $f(x)$ is $1$, and whenever the oracle responds with $0$, we know the $i$th bit of $f(x)$ is $0$.
+  In this way, $M'$ reconstructs $f(x)$, then proceeds with the computation of $M$.
+  Thus $M'$ is a correct logarithmic space Turing machine that decides $L$ with nonadaptive oracle access to $B_f$.
+\end{proof}
+
+\begin{todo}
+  Is the following lemma correct?
+\end{todo}
+
+\begin{lemma}\label{lem:compose}
+  Logarithmic space nonadaptive Turing reductions compose.
+\end{lemma}
+\begin{proof}
+  Let $A$, $B$, and $C$ be arbitrary languages.
+  Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
+  We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
+
+  Let $L(x)$ denote the characteristic function of $L$ on input $x$.
+  Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
+  Thus $x \in A$ if and only if $M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
+  Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
+  Compute the $y_i$s from $x$ in logarithmic space.
+  Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
+  Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
+\end{proof}
+
+Our goal is to show that Stallings' folding process is inherently sequential.
+In order to do that, we must show that \Flow{} is complete for $\P$ under logarithmic space many-one reductions.
+We are only able to show the following weaker theorem.
+
+\begin{theorem}
+  \Flow{} is complete for $\P$ under logarithmic space non-adaptive Turing reductions, even when the input to $F$ is a flower graph and a core graph (with respect to the same vertex).
+\end{theorem}
+\begin{proof}
+  \Flow{} is in $\P$ because Stallings' folding process is computable in polynomial time, and checking individual bits of the computation history can be done in polynomial time as well.
+
+  By \autoref{thm:fpcomplete} and \autoref{lem:nonadaptive}, $B_F$ is complete under logarithmic space nonadaptive Turing reductions.
+  It suffices to show a logarithmic space many-one reduction from $B_F$ to \Flow{}, since a many-one reduction implies a nonadaptive Turing reduction, and logarithmic space nonadaptive Turing reductions compose (\autoref{lem:compose}).
+  The reduction is $\langle \langle S, G, \mu \rangle, i, b \rangle \mapsto \langle \langle S, G, \mu \rangle, i', b\rangle$, where $i'$ is the index of the $i$th bit of the last binary string written during the computation of $F$ (assuming without loss of generality that $F$ writes its output to memory immediately before halting).
+  Bit $i'$ in the flow function is exactly the same as the $i$th bit of $F(S, G, \mu)$, so the reduction is correct.
+\end{proof}
+
+\begin{todo}
+  State in the introduction that $G$ represents $(S, G, \mu)$, for the sake of brevity.
+\end{todo}
+
+\begin{conjecture}
+  Stallings' folding process is inherently sequential (that is, \Flow{} is complete for $\P$ under logarithmic space many-one reductions).
+\end{conjecture}
 
 \printbibliography
 

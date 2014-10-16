@@ -263,6 +263,10 @@ We say the function computed by $M$ is \emph{inherently sequential} if \textsc{F
 % TODO bad section title
 \section{Completeness results}
 
+\subsection
+    [Computing properties of Stallings' folding process is inherently sequential]
+    {Computing properties of Stallings' folding process \\ is inherently sequential}
+
 We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
 The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
 %% This can be found in, for example, Mathematics for Computer Science by
@@ -397,21 +401,24 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Therefore, $\delta(G') \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
-\begin{theorem}\label{thm:fpcomplete}
-  Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.
-  More generally, Stallings' folding process is $\FP$-complete.
-\end{theorem}
+\subsection{Useful lemmas for reductions}
+
+\begin{lemma}\label{lem:compose}
+  Logarithmic space nonadaptive Turing reductions compose.
+\end{lemma}
 \begin{proof}
-  As stated in the introduction, Stallings' folding process is in $\FP$.
-  In order to show that $F$ is hard for $\P$, it suffices to show a logarithmic space single query Turing reduction from \FD{} to $F$.
-  The following logarithmic space Turing machine with access to an oracle for $F$ decides \FD{}.
-  On input $\langle S, G, \mu, k \rangle$,
-  \begin{itemize}
-  \item query $F$ on $\langle S, G, \mu \rangle$ to get graph $G'$ and label function $\mu'$,
-  \item compute $|Y|$ as in \autoref{lem:main},
-  \item accept if and only if $|Y| \geq k$.
-  \end{itemize}
-  Since the rank of $\gen{U}$ equals $|Y|$, the correctness of the reduction follows.
+  Let $A$, $B$, and $C$ be arbitrary languages.
+  Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
+  We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
+
+  Let $L(x)$ denote the characteristic function of $L$ on input $x$.
+  Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
+  Thus $x \in A$ if and only if
+  $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
+  Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
+  Compute the $y_i$s from $x$ in logarithmic space.
+  Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
+  Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
 \end{proof}
 
 \begin{lemma}\label{lem:nonadaptive}
@@ -432,23 +439,24 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Thus $M'$ is a correct logarithmic space Turing machine that decides $L$ with nonadaptive oracle access to $B_f$.
 \end{proof}
 
-\begin{lemma}\label{lem:compose}
-  Logarithmic space nonadaptive Turing reductions compose.
-\end{lemma}
-%% \begin{proof}
-%%   Let $A$, $B$, and $C$ be arbitrary languages.
-%%   Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
-%%   We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
+\subsection{Stallings' folding process is inherently sequential}
 
-%%   Let $L(x)$ denote the characteristic function of $L$ on input $x$.
-%%   Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
-%%   Thus $x \in A$ if and only if
-%%   $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
-%%   Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
-%%   Compute the $y_i$s from $x$ in logarithmic space.
-%%   Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
-%%   Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
-%% \end{proof}
+\begin{theorem}\label{thm:fpcomplete}
+  Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.
+  More generally, Stallings' folding process is $\FP$-complete.
+\end{theorem}
+\begin{proof}
+  As stated in the introduction, Stallings' folding process is in $\FP$.
+  In order to show that $F$ is hard for $\P$, it suffices to show a logarithmic space single query Turing reduction from \FD{} to $F$.
+  The following logarithmic space Turing machine with access to an oracle for $F$ decides \FD{}.
+  On input $\langle S, G, \mu, k \rangle$,
+  \begin{itemize}
+  \item query $F$ on $\langle S, G, \mu \rangle$ to get graph $G'$ and label function $\mu'$,
+  \item compute $|Y|$ as in \autoref{lem:main},
+  \item accept if and only if $|Y| \geq k$.
+  \end{itemize}
+  Since the rank of $\gen{U}$ equals $|Y|$, the correctness of the reduction follows.
+\end{proof}
 
 Our goal is to show that Stallings' folding process is inherently sequential.
 In order to do that, we must show that \Flow{} is complete for $\P$ under logarithmic space many-one reductions.

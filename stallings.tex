@@ -124,12 +124,22 @@ A \emph{language} is a subset of $\Sigma^*$.
 
 \subsection{Complexity}
 
-We say a Turing machine $M$ decides a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
-The complexity class \P{} is the class of all languages $L$ that can be decided in polynomial time.
+We say a Turing machine $M$ \emph{decides} a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
+A function $f$ is \emph{computable} if there is a Turing machine that, on any input $x$, always halts with $f(x)$ on its tape.
+The complexity class $\P$ is the class of all languages that can be decided in polynomial time.
+The complexity class $\FP$ is the collection of functions that are computable by a Turing machine in polynomial time (that is, there is a Turing machine $M$ and a polynomial $p$ such that on inputs $x$ of length $n$, the machine $M$ halts with $f(x)$ on its tape within $p(n)$ steps).
+The complexity class $\L$ is the class of all languages that can be decided on a Turing machine with a read-only input tape and a read-write work tape using at most $O(\log n)$ space on the work tape.
+The complexity class $\FL$ is the collection of functions that are computable on a Turing machine with a read-only input tape, a write-only output tape, and a read-write work tape using at most $O(\log n)$ space on the work tape.
 
-If $L_1$ and $L_2$ are languages, we say there is a \emph{many-one reduction} from $L_1$ to $L_2$ if there is a function $f$ such that $x \in L_1$ if and only if $f(x) \in L_2$, and we write $L_1 \leq_m L_2$.
-If furthermore $f$ is computable by a Turing machine using at most $O(\log n)$ space, we say there is a \emph{logarithmic space many-one reduction} from $L_1$ to $L_2$, and we write $L_1 \leq_m^L L_2$ (\L{} is the class of languages that can be decided in logarithmic space).
-If there is a logarithmic space many-one reduction from each language in \P{} to a language $A$, then $A$ is \emph{\P-hard}; if furthermore $A$ is in \P, then $A$ is \emph{\P-complete}.
+If $L$ is a language, let $L(w)$ denote the \emph{characteristic function} of $w$, defined by $L(w) = 1$ if $w \in L$ and $L(w) = 0$ if $w \notin L$.
+If $L_1$ and $L_2$ are languages, there is a \emph{logarithmic space many-one reduction} from $L_1$ to $L_2$ if there is a function $f \in \FL$ such that $x \in L_1$ if and only if $f(x) \in L_2$.
+There is a \emph{logarithmic space nonadaptive Turing reduction} from $L_1$ to $L_2$ if there is a Turing machine $M$ and a function $h \in \FL$ such that $x \in L_1$ if and only if $M(x, L_2(y_1), \dotsc, L_2(y_t))$ accepts, where $(y_1, \dotsc, y_t)$ is the output of $h(x)$.
+If $L$ is a language and $F$ is a computable function, there is a \emph{logarithmic space Turing reduction} from $L$ to $F$ if there is an oracle Turing machine $M$ such that $x \in L$ if and only if $M^F(x)$ accepts.
+If $t = 1$, the reduction is called a \emph{logarithmic space single query Turing reduction}.
+
+Let $L$ be a language and $F$ be a computable function.
+If there is a logarithmic space many-one reduction from each language in $\P$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.
+If there is a logarithmic space Turing reduction from each language in $\P$ to $F$, then $F$ is \emph{$\FP$-hard}; if furthermore $F$ is in $\FP$, then $F$ is \emph{$\FP$-complete}.
 
 \subsection{Free groups}
 
@@ -391,9 +401,6 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.
   More generally, Stallings' folding process is $\FP$-complete.
 \end{theorem}
-\begin{todo}
-  Definition of $\FP$-complete.
-\end{todo}
 \begin{proof}
   As stated in the introduction, Stallings' folding process is in $\FP$.
   In order to show that $F$ is hard for $\P$, it suffices to show a logarithmic space single query Turing reduction from \FD{} to $F$.

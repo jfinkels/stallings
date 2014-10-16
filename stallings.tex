@@ -299,6 +299,7 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Create one circle rooted at $v_0$ for each word $u$ in $U$, and each circle is divided into $|u|$ edges, one for each symbol of $u$.
   Each edge of the circle is then labeled with the corresponding symbol in $u$.
   Wherever the graph contains a label $s^{-1}$, the inverse of a symbol $s$ in $S$, that edge is reversed (that is, $(v, w)$ is replaced with $(w, v)$) and we replace the label $s^{-1}$ with the label $s$ on the reversed edge.
+  In this way we have constructed a graph with only positive edges; this simplifies our proof a bit.
 
   This function is computable in logarithmic space because a loop over the set $U$ requires $O(\log |U|)$ space, a loop over a word $u \in U$ requires $O(\log |u|)$ space, and writing the adjacency matrix of the graph and the corresponding labels can be done in constant space.
   Thus, item 1 is satisfied.
@@ -308,30 +309,28 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Thus, item 2 is satisfied
 
   Now in order to construct $Y$, we examine the properties of the graph $G$ under $F$, Stalling's folding process.
-  Let $G' = F(G)$ and $v'_0 = F_G(v)$, where $F_G(v)$ denotes the image of $v$ under the sequence of foldings produced by $F$.
+  Let $G' = F(G)$ and $v'_0 = F_G(v_0)$, where $F_G(v)$ denotes the image of $v$ under the sequence of foldings produced by $F$.
+  We know $G'$ has a spanning tree $T$ which is geodesic with respect to $v'_0$ by \cite[Lemma~6.6]{km02}.
+  For any vertex $z$ in $V(G')$, let $[v'_0, z]_T$ denote the path from $v'_0$ to $z$ within the spanning tree $T$.
+  For each edge $e$ in $E(G') \setminus E(T)$ (in other words, $e$ is an edge in $G'$ not in the spanning tree $T$), let $p_e$ denote the path that results from the concatenation of the three paths $[v'_0, o(e)]_T, e, [t(e), v'_0]_T$.
+  (Since $T$ is a spanning tree, $[v'_0, o(e)]_T$ and $[t(e), v'_0]_T$ must exist.)
+  Define the set of words $Y$ as
+  \begin{equation*}
+    Y = \left\{\mu(p_e) \, \middle| \, e \in E(G') \setminus E(T) \right\}.
+  \end{equation*}
   Now
   \begin{align*}
     \gen{U} & = \rho(L(G, v_0)) & \qquad \text{ (by \cite[Proposition~3.8]{km02})} \\
             & = \rho(L(G', v'_0)) & \qquad \text{ (by \cite[Lemma~3.4]{km02})} \\
-            & = L(G', v'_0), & \qquad \text{ (by \cite[Lemma~2.9]{km02})}
+            & = L(G', v'_0), & \qquad \text{ (by \cite[Lemma~2.9]{km02})} \\
+            & = \gen{Y}, & \qquad \text{ (by \cite[Lemma~6.1]{km02})}
   \end{align*}
-  We know $G'$ has a spanning tree $T$ which is geodesic with respect to $v'_0$ by \cite[Lemma~6.6]{km02}.
-  For any vertex $z$ in $V(G')$, let $[v'_0, z]_T$ denote the path from $v'_0$ to $z$ within the spanning tree $T$.
-  \begin{todo}
-    Remove the positive business here.
-  \end{todo}
-  For each edge $e$ in $\pos(E(\hat{G'}) \setminus E(T))$ (in other words, $e$ is a positive edge in $\hat{G}$ not in the spanning tree of $T$), let $[e]$ denote the path which results from the concatenation of paths $[v'_0, o(e)]_T, e, [t(e), v'_0]_T$.
-  Define $Y$ as
-  \begin{equation*}
-    Y = \left\{\left[e\right] \, \middle| \, e \in \pos\left(E\left(\hat{G'}\right) \setminus E(T)\right) \right\}.
-  \end{equation*}
-  If we treat $Y$ as a set of words over $S$ induced by the labels of the paths, then $L(G', v'_0) = \gen{Y}$ by \cite[Lemma~6.1]{km02}, so $\gen{U} = \gen{Y}$.
   Since, $\gen{U} = \gen{Y}$, their ranks are equal.
   Finally, the rank of $\gen{Y}$ is $|Y|$, since $Y$ is Nielsen reduced by \cite[Proposition~6.7]{km02}.
   Therefore, the rank of $\gen{U}$ equals $|Y|$.
 
   Computing $|Y|$ can be done by counting the number of (positive) edges in $G'$ not in $T$.
-  Computing $T$ from $G'$ can be done recursively in \ldots (implicit in \autocite[Lemma~6.6]{km02}).
+  Computing $T$ from $G'$ can be done recursively in logarithmic space (by recursively computing $T_n$, the geodesic spanning tree for all vertices at distance $n$ from $v_0$; this requires $O(n)$ levels of recursion, each of which requires looping over $O(n^2)$ edges and checking if each edge is adjacent to one already in the spanning tree from the next level of recursion, thereby requiring at most $O(\log n)$ space).
 \end{proof}
 
 \begin{theorem}\label{thm:fdpcomplete}
@@ -349,14 +348,13 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   In order to show that the reduction is correct, it suffices to show that the additive density of $F(G)$ equals $|Y| - 1$.
   The set $Y$ is defined as
   \begin{equation*}
-    Y = \left\{\left[e\right] \, \middle| \, e \in \pos\left(E\left(\hat{G'}\right) \setminus E(T)\right) \right\},
+    Y = \left\{\mu(p_e) \, \middle| \, e \in E(G') \setminus E(T) \right\},
   \end{equation*}
   where $G' = F(G)$ and $T$ is a spanning tree for $G'$.
   Now
   \begin{align*}
-    |Y| & = |\pos(E(\hat{G'}) \setminus E(T))| & \\
-    & = |\pos(E(\hat{G'}))| - |\pos(E(T))| & \text{ (since } E(T) \subseteq E(\hat{G'}) \text{)} \\
-    & = |E(G')| - |E(T)| & \text{ (by construction)} \\
+    |Y| & = |E(G') \setminus E(T)| & \\
+    & = |E(G')| - |E(T)| & \text{ (since } E(T) \subseteq E(\hat{G'}) \text{)} \\
     & = |E(G')| - (|V(G')| - 1) & \text{ (by \autoref{lem:tree})} \\
     & = |E(G')| - |V(G')| + 1 & \\
     & = \delta(G') + 1 & \text{ (by definition of } \delta \text{)}.
@@ -427,27 +425,23 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Thus $M'$ is a correct logarithmic space Turing machine that decides $L$ with nonadaptive oracle access to $B_f$.
 \end{proof}
 
-\begin{todo}
-  Is the following lemma correct?
-\end{todo}
-
 \begin{lemma}\label{lem:compose}
   Logarithmic space nonadaptive Turing reductions compose.
 \end{lemma}
-\begin{proof}
-  Let $A$, $B$, and $C$ be arbitrary languages.
-  Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
-  We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
+%% \begin{proof}
+%%   Let $A$, $B$, and $C$ be arbitrary languages.
+%%   Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
+%%   We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
 
-  Let $L(x)$ denote the characteristic function of $L$ on input $x$.
-  Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
-  Thus $x \in A$ if and only if
-  $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
-  Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
-  Compute the $y_i$s from $x$ in logarithmic space.
-  Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
-  Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
-\end{proof}
+%%   Let $L(x)$ denote the characteristic function of $L$ on input $x$.
+%%   Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
+%%   Thus $x \in A$ if and only if
+%%   $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
+%%   Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
+%%   Compute the $y_i$s from $x$ in logarithmic space.
+%%   Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
+%%   Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
+%% \end{proof}
 
 Our goal is to show that Stallings' folding process is inherently sequential.
 In order to do that, we must show that \Flow{} is complete for $\P$ under logarithmic space many-one reductions.
@@ -464,10 +458,6 @@ We are only able to show the following weaker theorem.
   The reduction is $\langle \langle S, G, \mu \rangle, i, b \rangle \mapsto \langle \langle S, G, \mu \rangle, i', b\rangle$, where $i'$ is the index of the $i$th bit of the last binary string written during the computation of $F$ (assuming without loss of generality that $F$ writes its output to memory immediately before halting).
   Bit $i'$ in the flow function is exactly the same as the $i$th bit of $F(S, G, \mu)$, so the reduction is correct.
 \end{proof}
-
-\begin{todo}
-  State in the introduction that $G$ represents $(S, G, \mu)$, for the sake of brevity.
-\end{todo}
 
 \begin{conjecture}
   Stallings' folding process is inherently sequential (that is, \Flow{} is complete for $\P$ under logarithmic space many-one reductions).

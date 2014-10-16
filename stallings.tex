@@ -195,6 +195,10 @@ It proceeds by repeatedly choosing a foldable pair of edges (say, the lexicograp
   Stallings' folding process, $F$, is in $\FP$.
 \end{theorem}
 
+The input to $F$ is a finite alphabet $S$, a directed graph $G$, and a label function $\mu \colon E(G) \to S$.
+The output of $F$ is the same alphabet $S$, a directed graph $G'$, and a label function $\mu' \colon E(G') \to S$.
+For the sake of brevity, instead of writing $(S, G', \mu') = F(S, G, \mu)$, we will write $G' = F(G)$, when the alphabet and the label function are clear from context.
+
 % TODO Move these definitions into the results section?
 \subsection{Computational problems}
 
@@ -334,7 +338,7 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   \FD{} is $\P$-complete, even when the graph is a both a flower graph and a core graph (with respect to the same vertex).
 \end{theorem}
 \begin{proof}
-  By \autoref{thm:finfp}, $F(S, G, \mu)$ is computable in polynomial time.
+  By \autoref{thm:finfp}, $F(G)$ is computable in polynomial time.
   Computing the additive density of a graph can be done in linear time, as can comparison with an integer, so \FD{} is in $\P$.
 
   To show that \FD{} is $\P$-hard, we show a logarithmic space many-one reduction from the $\P$-complete decision problem \FGR{} to \FD{}.
@@ -342,12 +346,12 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   This reduction is computable in logarithmic space by that lemma as well.
 
   Let $Y$ be the set constructed in \autoref{lem:main} such that the rank of $\gen{U}$ equals $|Y|$.
-  In order to show that the reduction is correct, it suffices to show that the additive density of $F(S, G, \mu)$ equals $|Y| - 1$.
+  In order to show that the reduction is correct, it suffices to show that the additive density of $F(G)$ equals $|Y| - 1$.
   The set $Y$ is defined as
   \begin{equation*}
     Y = \left\{\left[e\right] \, \middle| \, e \in \pos\left(E\left(\hat{G'}\right) \setminus E(T)\right) \right\},
   \end{equation*}
-  where $G' = F(S, G, \mu)$ and $T$ is a spanning tree for $G'$.
+  where $G' = F(G)$ and $T$ is a spanning tree for $G'$.
   Now
   \begin{align*}
     |Y| & = |\pos(E(\hat{G'}) \setminus E(T))| & \\
@@ -373,16 +377,16 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Each fold in Stallings' folding process decreases the number of edges in the final graph by one.
   Each fold decreases the number of vertices in the final graph by one, unless the fold operates on two parallel edges with the same label (that is, two edges with the same origin, terminus, and label), in which case, the number of vertices remains unchanged.
   (This includes folds of double self-loops.)
-  Let $N_F(S, G, \mu)$ be the number of folds when Stallings' folding process is run on input $(S, G, \mu)$, and let $N^\|_F(S, G, \mu)$ be the number of those folds which are folds of a pair of a parallel edges.
-  If $G' = F(S, G, \mu)$, it follows that $|E(G')| = |E(G)| - N_F(S, G, \mu)$ and $|V(G')| = |V(G)| - (N_F(S, G, \mu) - N^\|_F(S, G, \mu))$.
+  Let $N_F(G)$ be the number of folds when Stallings' folding process is run on input $G$, and let $N^\|_F(G)$ be the number of those folds which are folds of a pair of a parallel edges.
+  If $G' = F(G)$, it follows that $|E(G')| = |E(G)| - N_F(G)$ and $|V(G')| = |V(G)| - (N_F(G) - N^\|_F(G))$.
   Hence
   \begin{align*}
     \delta(G') & = |E(G')| - |V(G')| \\
-    & = (|E(G)| - N_F(S, G, \mu)) - (|V(G)| - (N_F(S, G, \mu) - N^\|_F(S, G, \mu))) \\
-    & = (|E(G)| - |V(G)|) - N_F(S, G, \mu) + N_F(S, G, \mu) - N^\|_F(S, G, \mu) \\
-    & = \delta(G) - N^\|_F(S, G, \mu).
+    & = (|E(G)| - N_F(G)) - (|V(G)| - (N_F(G) - N^\|_F(G))) \\
+    & = (|E(G)| - |V(G)|) - N_F(G) + N_F(G) - N^\|_F(G) \\
+    & = \delta(G) - N^\|_F(G).
   \end{align*}
-  Therefore, $\delta(G') \leq k \iff \delta(G) - N^\|_F(S, G, \mu) \leq k \iff N^\|_F(S, G, \mu) \geq \delta(G) - k$.
+  Therefore, $\delta(G') \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
 \begin{theorem}\label{thm:fpcomplete}
@@ -437,7 +441,8 @@ The proofs of the following lemma and theorems rely heavily on the results from 
 
   Let $L(x)$ denote the characteristic function of $L$ on input $x$.
   Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
-  Thus $x \in A$ if and only if $M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
+  Thus $x \in A$ if and only if
+  $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
   Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
   Compute the $y_i$s from $x$ in logarithmic space.
   Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).

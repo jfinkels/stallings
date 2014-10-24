@@ -277,37 +277,24 @@ Suppose $M$ is an arbitary RAM.
 
 We say the function computed by $M$ is \emph{inherently sequential} if \textsc{Flow($M$)} is $\P$-complete (\autocite[Definition~8.2.2]{ghr95}).
 
-% TODO bad section title
-\section{Completeness results}
+\section{Transforming a subgroup into a graph}
+% Foreword
 
-\subsection
-    [Computing properties of Stallings' folding process is inherently sequential]
-    {Computing properties of Stallings' folding process \\ is inherently sequential}
+% context (focus on anyone) why now? - current situation, and why the need is so important
+How can a simple graph algorithm be used to compute the rank of a finitely generated subgroup of a free group?
+% need (focus on readers) why you? - why this is relevant to the reader, and why something needed to be done
+First we need to prove that for each set of generators there is an ``equivalent'' graph that has the properties we desire.
+% task (focus on author) why me? - what was undertaken to address the need
+We restate a result implicit in \autocite{km02} so that we can use this equivalence in a complexity theoretic proof.
+% object (focus on document) why this document - what the document covers
 
-We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
-The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
-%% This can be found in, for example, Mathematics for Computer Science by
-%% Leighton, Meyer, and Lehman.
-\begin{lemma}\label{lem:tree}
-  Let $G$ be a graph with vertex set $V$ and edge set $E$.
-  If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
-\end{lemma}
-\begin{proof}
-  This proof is by induction on the number of vertices in the graph.
-  Let $T_n$ denote a minimal spanning tree on a graph $G_n$ with $n$ vertices.
-  For the base case, consider the graph on one vertex with no edges.
-  In this case, the minimal spanning tree $T_1$ is the empty tree, so
-  \begin{equation*}
-    0 = |E(T_1)| = |V(G)| - 1 = 1 - 1 = 0.
-  \end{equation*}
-  For the inductive step, suppose that for graphs with $i$ vertices, we have $|E(T_i)| = |V(G_i)| - 1$.
-  Consider a minimal spanning tree $T_{i + 1}$ of a graph $G_{i + 1}$ on $i + 1$ vertices.
-  Now the subgraph of $T_{i + 1}$ which is just $T_{i + 1}$ with a single leaf removed, call it $T_i$, is a minimal spanning tree of a subgraph of $G_{i + 1}$ which has $i$ vertices, call it $G_i$.
-  By the inductive hypothesis, $|E(T_i)| = |V(G_i)| - 1$.
-  This implies $|E(T_{i + 1})| = |E(T_i)| + 1 = |V(G_i)| = |V(G_{i + 1})| - 1$, which concludes the proof.
-\end{proof}
+% Summary
+%
+% findings (focus on author) what? - what the work revealed when performing the task
+% conclusion (focus on readers) so what? - what the findings mean for the audience
+% perspective (focus on anyone) what now? - what should be done next
 
-We restate in the language of complexity theory a result implicit in \cite{km02}.
+
 The proofs of the following lemma and theorems rely heavily on the results from that work; please see the referenced lemmas and propositions for more information.
 
 \begin{lemma}\label{lem:main}
@@ -364,6 +351,44 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Computing $T$ from $G'$ can be done recursively in logarithmic space (by recursively computing $T_n$, the geodesic spanning tree for all vertices at distance $n$ from $v_0$; this requires $O(n)$ levels of recursion, each of which requires looping over $O(n^2)$ edges and checking if each edge is adjacent to one already in the spanning tree from the next level of recursion, thereby requiring at most $O(\log n)$ space).
 \end{proof}
 
+\section{Computing some properties of Stallings' folding process is inherently sequential}
+% Foreword
+
+% context (focus on anyone) why now? - current situation, and why the need is so important
+
+% need (focus on readers) why you? - why this is relevant to the reader, and why something needed to be done
+% task (focus on author) why me? - what was undertaken to address the need
+% object (focus on document) why this document - what the document covers
+
+% Summary
+%
+% findings (focus on author) what? - what the work revealed when performing the task
+% conclusion (focus on readers) so what? - what the findings mean for the audience
+% perspective (focus on anyone) what now? - what should be done next
+
+We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
+The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
+%% This can be found in, for example, Mathematics for Computer Science by
+%% Leighton, Meyer, and Lehman.
+\begin{lemma}\label{lem:tree}
+  Let $G$ be a graph with vertex set $V$ and edge set $E$.
+  If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
+\end{lemma}
+\begin{proof}
+  This proof is by induction on the number of vertices in the graph.
+  Let $T_n$ denote a minimal spanning tree on a graph $G_n$ with $n$ vertices.
+  For the base case, consider the graph on one vertex with no edges.
+  In this case, the minimal spanning tree $T_1$ is the empty tree, so
+  \begin{equation*}
+    0 = |E(T_1)| = |V(G)| - 1 = 1 - 1 = 0.
+  \end{equation*}
+  For the inductive step, suppose that for graphs with $i$ vertices, we have $|E(T_i)| = |V(G_i)| - 1$.
+  Consider a minimal spanning tree $T_{i + 1}$ of a graph $G_{i + 1}$ on $i + 1$ vertices.
+  Now the subgraph of $T_{i + 1}$ which is just $T_{i + 1}$ with a single leaf removed, call it $T_i$, is a minimal spanning tree of a subgraph of $G_{i + 1}$ which has $i$ vertices, call it $G_i$.
+  By the inductive hypothesis, $|E(T_i)| = |V(G_i)| - 1$.
+  This implies $|E(T_{i + 1})| = |E(T_i)| + 1 = |V(G_i)| = |V(G_{i + 1})| - 1$, which concludes the proof.
+\end{proof}
+
 \begin{theorem}\label{thm:fdpcomplete}
   \FD{} is $\P$-complete, even when the graph is a both a flower graph and a core graph (with respect to the same vertex).
 \end{theorem}
@@ -418,7 +443,20 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Therefore, $\delta(G') \leq k \iff \delta(G) - N^\|_F(G) \leq k \iff N^\|_F(G) \geq \delta(G) - k$.
 \end{proof}
 
-\subsection{Useful lemmas for reductions}
+\section{Useful lemmas for reductions}
+% Foreword
+
+% context (focus on anyone) why now? - current situation, and why the need is so important
+
+% need (focus on readers) why you? - why this is relevant to the reader, and why something needed to be done
+% task (focus on author) why me? - what was undertaken to address the need
+% object (focus on document) why this document - what the document covers
+
+% Summary
+%
+% findings (focus on author) what? - what the work revealed when performing the task
+% conclusion (focus on readers) so what? - what the findings mean for the audience
+% perspective (focus on anyone) what now? - what should be done next
 
 \begin{lemma}\label{lem:compose}
   Logarithmic space nonadaptive Turing reductions compose.
@@ -468,7 +506,20 @@ The proofs of the following lemma and theorems rely heavily on the results from 
   Thus $M'$ is a correct logarithmic space Turing machine that decides $L$ with nonadaptive oracle access to $B_f$.
 \end{proof}
 
-\subsection{Stallings' folding process is inherently sequential}
+\section{Stallings' folding process is inherently sequential}
+% Foreword
+
+% context (focus on anyone) why now? - current situation, and why the need is so important
+
+% need (focus on readers) why you? - why this is relevant to the reader, and why something needed to be done
+% task (focus on author) why me? - what was undertaken to address the need
+% object (focus on document) why this document - what the document covers
+
+% Summary
+%
+% findings (focus on author) what? - what the work revealed when performing the task
+% conclusion (focus on readers) so what? - what the findings mean for the audience
+% perspective (focus on anyone) what now? - what should be done next
 
 \begin{theorem}\label{thm:fpcomplete}
   Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.

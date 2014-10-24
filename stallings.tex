@@ -135,7 +135,7 @@ If $L$ is a language, let $L(w)$ denote the \emph{characteristic function} of $w
 If $L_1$ and $L_2$ are languages, there is a \emph{logarithmic space many-one reduction} from $L_1$ to $L_2$ if there is a function $f \in \FL$ such that $x \in L_1$ if and only if $f(x) \in L_2$.
 There is a \emph{logarithmic space nonadaptive Turing reduction} from $L_1$ to $L_2$ if there is a Turing machine $M$ and a function $h \in \FL$ such that $x \in L_1$ if and only if $M(x, L_2(y_1), \dotsc, L_2(y_t))$ accepts, where $(y_1, \dotsc, y_t)$ is the output of $h(x)$.
 If $L$ is a language and $F$ is a computable function, there is a \emph{logarithmic space Turing reduction} from $L$ to $F$ if there is an oracle Turing machine $M$ such that $x \in L$ if and only if $M^F(x)$ accepts.
-If $t = 1$, the reduction is called a \emph{logarithmic space single query Turing reduction}.
+If furthermore $M$ makes at most one query to $F$, the reduction is called a \emph{logarithmic space single query Turing reduction}.
 
 Let $L$ be a language and $F$ be a computable function.
 If there is a logarithmic space many-one reduction from each language in $\P$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.

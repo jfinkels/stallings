@@ -201,6 +201,7 @@ Informally, a \emph{fold} is a function which identifies not only two foldable e
 %% the same freely reduced language
 \emph{Stallings' folding process}, defined in \autocite[Algorithm~5.4]{stallings83}, is a function, denoted $F$, that operates on labeled, directed graphs.
 It proceeds by repeatedly choosing a foldable pair of edges (say, the lexicographically first pair) and folding them until there are no more foldable edges.
+
 \begin{theorem}[{\autocite{touikan06}}]\label{thm:finfp}
   Stallings' folding process, $F$, is in $\FP$.
 \end{theorem}
@@ -408,17 +409,29 @@ The proofs of the following lemma and theorems rely heavily on the results from 
 \end{lemma}
 \begin{proof}
   Let $A$, $B$, and $C$ be arbitrary languages.
-  Suppose there are some logarithmic space Turing machine $M$ and $N$ such that $M^B$ decides $A$ and $N^C$ decides $B$, both with nonadaptive oracle access.
-  We want to show that there is a machine $T$ such that $T^C$ decides $A$ with nonadaptive oracle access.
+  Suppose there are functions $g$ and $h$ in $\FL$ and logarithmic space Turing machine $M$ and $N$ such that $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts, where $g(x) = (y_1, \dotsc, y_s)$ and $h(y) = (z_1, \dotsc, z_t)$.
 
-  Let $L(x)$ denote the characteristic function of $L$ on input $x$.
-  Then $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts for some sequence of strings $y_1, \dotsc, y_s$ computable from $x$ in logarithmic space, and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts for some sequence of strings $z_1, \dotsc, z_t$ computable from $y$ in logarithmic space.
+  Let $g(x)_i$ denote the $i$th string in the $s$-tuple output by $g(x)$.
+  Define function $h'$ by $h'(x) = h(g(x)_1) \circ \dotsb \circ h(g(x)_s)$ for all strings $x$, where $\circ$ denotes concatenation of tuples.
+  The function $h'$ is in $\FL$ because $\FL$ functions compose.
+  Define Turing machine $M'$ as follows.
+  On input string $x$ and oracle answers $C(z_{1, 1}), \dotsc, C(z_{1, t_1}), \dotsc, C(z_{s, 1}), \dotsc, C(z_{s, t_s}))$,
+  \begin{itemize}
+  \item simulate $g(x)$ to yield $(y_1, \dotsc, y_s)$,
+  \item for each $y_i$, simulate $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$ to yield output bit $b_i$,
+  \item simulate $M(x, b_1, \dotsc, b_s)$.
+  \end{itemize}
+  The Turing machine $M'$ runs in logarithmic space because it is essentially computing the composition of three logarithmic space computable functions: $g$, $N$, and $M$.
+  We claim that $h'$ and $M'$ together constitute the reduction from $A$ to $C$.
+
+  By hypothesis $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts.
+  Also by hypothesis, for each $y_i$, we have $y_i \in B$ if and only if $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$ accepts.
   Thus $x \in A$ if and only if
-  $$M(x, N(y_1, C(z_{1,1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))$$ accepts for some sequence of $y_i$s and $z_{i, j}$s.
-  Define the machine $M'$ as follows on input $(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$.
-  Compute the $y_i$s from $x$ in logarithmic space.
-  Compute the $z_{i, j}$s from each $y_i$ in logarithmic space (still with respect to $x$, since logarithmic space computable functions compose).
-  Simulate $M$ with queries $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$.
+  \begin{equation}\label{eq:m}
+    M(x, N(y_1, C(z_{1, 1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))
+  \end{equation}
+  accepts.
+  By construction $M'(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$ computes exactly the same function as the machine in \eqref{eq:m}, so the reduction is correct.
 \end{proof}
 
 \begin{lemma}\label{lem:nonadaptive}

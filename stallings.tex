@@ -287,15 +287,18 @@ First we need to prove that for each set of generators there is an ``equivalent'
 % task (focus on author) why me? - what was undertaken to address the need
 We restate a result implicit in \autocite{km02} so that we can use this equivalence in a complexity theoretic proof.
 % object (focus on document) why this document - what the document covers
+\autoref{lem:main} is a summary and restatement of some results in \autocite{km02}; please see the referenced lemmas and propositions for more information and complete proofs.
 
 % Summary
 %
 % findings (focus on author) what? - what the work revealed when performing the task
+According to the following lemma, each finitely generated subgroup of a free group can be represented as a flower graph whose ``petals'' are labeled with the words in the generating set.
+In this way, a word in the generating set corresponds to a cycle that begins at the root, proceeds around a petal, and terminates at the root.
+Concatenation of words then corresponds to a walk consisting of a concatenation of cycles, always returning to the root.
 % conclusion (focus on readers) so what? - what the findings mean for the audience
+Since this transformation from group to graph is efficiently computable, it allows to translate statements about labeled directed graphs to statements about free groups.
 % perspective (focus on anyone) what now? - what should be done next
-
-
-The proofs of the following lemma and theorems rely heavily on the results from that work; please see the referenced lemmas and propositions for more information.
+With this transformation and the fact that \FGR{} is $\P$-complete, we can show that the graph theoretic problems concerning Stallings' folding process are $\P$-complete as well.
 
 \begin{lemma}\label{lem:main}
   For each finite alphabet $S$ and finite set $U$ of freely reduced words over $\Spm$, there is a graph $G$ and a label function $\mu \colon E(G) \to S$ such that

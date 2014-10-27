@@ -1,0 +1,235 @@
+\begin{figure}
+  \caption{\label{fig:example}%
+    An step-by-step execution of Stallings' folding process on the graph corresponding to the set of words $U$ defined by $U = \{aab, aba^{-1}, ba^{-1}ba\}$ (this example is from \autocite[Figure~4]{km02}).
+  Each picture shows in orange the pair of edges to be folded.}
+  \begin{center}
+    \begin{tabular}{c c}
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[rotate={45}]
+          \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+            \Vertex{v0}
+          \end{scope}
+          \WE(v0){a}
+          \NO(a){b}
+        \end{scope}
+
+        \Edge[label={$a$}](v0)(a)
+        \Edge[label={$a$}](a)(b)
+        \Edge[label={$b$}, style={<-}](b)(v0)
+
+        \begin{scope}[rotate=30]
+          \SOEA(v0){c}
+        \end{scope}
+        \SOEA(c){d}
+        \begin{scope}[rotate=30]
+          \NOWE(d){e}
+        \end{scope}
+
+        \Edge[label={$b$}](v0)(c)
+        \Edge[label={$a$}, style={<-}](c)(d)
+        \Edge[label={$b$}](d)(e)
+        \Edge[label={$a$}](e)(v0)
+
+        \NO(v0){f}
+        \EA(f){g}
+
+        \Edge[color=orange, label={$a$}](v0)(f)
+        \Edge[label={$b$}](f)(g)
+        \Edge[color=orange, label={$a$}, style={<-}](g)(v0)
+      \end{tikzpicture}
+      &
+      %% Picture 2
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[rotate={45}]
+          \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+            \Vertex{v0}
+          \end{scope}
+          \WE(v0){a}
+          \NO(a){b}
+        \end{scope}
+
+        \Edge[label={$a$}](v0)(a)
+        \Edge[label={$a$}](a)(b)
+        \Edge[color=orange, label={$b$}, style={<-}](b)(v0)
+
+        \begin{scope}[rotate=30]
+          \SOEA(v0){c}
+        \end{scope}
+        \SOEA(c){d}
+        \begin{scope}[rotate=30]
+          \NOWE(d){e}
+        \end{scope}
+
+        \Edge[color=orange, label={$b$}](v0)(c)
+        \Edge[label={$a$}, style={<-}](c)(d)
+        \Edge[label={$b$}](d)(e)
+        \Edge[label={$a$}](e)(v0)
+
+        \NO(v0){f}
+
+        \Edge[label={$a$}, style={bend left=0}](v0)(f)
+        % {labelstyle=above} is needed here because tkz-graph seems to refuse to
+        % add the appropriate whitespace around the label.
+        \Loop[label={$b$}, dir=EA, dist=1cm, labelstyle={above}](f)
+      \end{tikzpicture}
+      \\
+      %% Picture 3
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+          \Vertex{v0}
+        \end{scope}
+        \NOEA(v0){a}
+
+        \Edge[color=orange, label={$a$}](v0)(a)
+        \Edge[label={$a$}](a)(c)
+
+        \begin{scope}[rotate=30]
+          \SOEA(v0){c}
+        \end{scope}
+        \SOEA(c){d}
+        \begin{scope}[rotate=30]
+          \NOWE(d){e}
+        \end{scope}
+
+        \Edge[label={$b$}](v0)(c)
+        \Edge[label={$a$}, style={<-}](c)(d)
+        \Edge[label={$b$}](d)(e)
+        \Edge[label={$a$}](e)(v0)
+
+        \SOWE(v0){f}
+
+        \Edge[color=orange, label={$a$}, style={bend left=0}](v0)(f)
+        % {labelstyle=below left} is needed here because tkz-graph seems to
+        % refuse to add the appropriate whitespace around the label.
+        \Loop[label={$b$}, dir=NOWE, dist=1cm, labelstyle={below left}](f)
+      \end{tikzpicture}
+      &
+      %% Picture 4
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+          \Vertex{v0}
+        \end{scope}
+        \NOEA(v0){a}
+
+        \Edge[label={$a$}](v0)(a)
+        \Edge[color=orange, label={$a$}](a)(c)
+
+        \begin{scope}[rotate=30]
+          \SOEA(v0){c}
+        \end{scope}
+        \SOEA(c){d}
+        \begin{scope}[rotate=30]
+          \NOWE(d){e}
+        \end{scope}
+
+        \Edge[label={$b$}](v0)(c)
+        \Edge[color=orange, label={$a$}, style={<-}](c)(d)
+        \Edge[label={$b$}](d)(e)
+        \Edge[label={$a$}](e)(v0)
+
+        % {labelstyle=above} is needed here because tkz-graph seems to
+        % refuse to add the appropriate whitespace around the label.
+        \Loop[label={$b$}, dir=EA, dist=1cm, labelstyle={above}](a)
+      \end{tikzpicture}
+      \\
+      %% Picture 5
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+          \Vertex{v0}
+        \end{scope}
+
+        \Edge[label={$a$}, style={bend left=0}](v0)(d)
+
+        \begin{scope}[rotate=30]
+          \SOEA(v0){c}
+        \end{scope}
+        \SOEA(c){d}
+        \begin{scope}[rotate=30]
+          \NOWE(d){e}
+        \end{scope}
+
+        \Edge[label={$b$}](v0)(c)
+        \Edge[label={$a$}, style={<-}](c)(d)
+        \Edge[color=orange, label={$b$}](d)(e)
+        \Edge[label={$a$}](e)(v0)
+
+        \Loop[color=orange, label={$b$}, dir=SO, dist=1cm, labelstyle={right, color=black}](d)
+      \end{tikzpicture}
+      &
+      %% Picture 6
+      \begin{tikzpicture}[->]
+        \GraphInit[vstyle=Simple]
+        \SetGraphUnit{1.2}
+        \tikzset{VertexStyle/.style={shape=circle, fill=black,
+            minimum size=2pt, inner sep=0pt}}
+        \tikzset{EdgeStyle/.style={bend left}}
+
+        \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+          \Vertex{v0}
+        \end{scope}
+        \EA(v0){c}
+        \SO(c){e}
+
+        \Edge[label={$a$}](v0)(e)
+
+        \Edge[label={$b$}](v0)(c)
+        \Edge[color=orange, label={$a$}, style={<-}](c)(e)
+        \Edge[color=orange, label={$a$}](e)(v0)
+
+        \Loop[label={$b$}, dir=WE, dist=1cm, labelstyle={below}](e)
+      \end{tikzpicture}
+      \\
+      \multicolumn{2}{c}{
+        %% Picture 7
+        \begin{tikzpicture}[->]
+          \GraphInit[vstyle=Simple]
+          \SetGraphUnit{1.2}
+          \tikzset{VertexStyle/.style={shape=circle, fill=black,
+              minimum size=2pt, inner sep=0pt}}
+          \tikzset{EdgeStyle/.style={bend left}}
+
+          \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+            \Vertex{v0}
+          \end{scope}
+          \EA(v0){e}
+
+          \Edge[label={$a$}](v0)(e)
+          \Edge[label={$a$}](e)(v0)
+
+          \Loop[label={$b$}, dir=NO, dist=1cm, labelstyle={left}](v0)
+          \Loop[label={$b$}, dir=SO, dist=1cm, labelstyle={right}](e)
+        \end{tikzpicture}
+      }
+    \end{tabular}
+  \end{center}
+\end{figure}

@@ -138,6 +138,9 @@ A \emph{language} is a subset of $\Sigma^*$.
 
 \subsection{Computational complexity}
 
+We assume some familiarity with two well-known models of computation: the Turing machine and the random access machine (RAM).
+For definitions and background information on these models, see \autocite{savage98}.
+
 We say a Turing machine $M$ \emph{decides} a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
 A function $f$ is \emph{computable} if there is a Turing machine that, on any input $x$, always halts with $f(x)$ on its tape.
 The complexity class $\P$ is the class of all languages that can be decided in polynomial time.
@@ -260,10 +263,10 @@ We will use this fact to show the $\P$-completeness of some related problems, an
 \end{definition}
 
 Suppose $M$ is an arbitary RAM.
-
-\begin{todo}
-  Define RAM flow function, define RAM.
-\end{todo}
+For any input $x$, each statement executed by $M$ when run on input $x$ has an associated \emph{value}.
+For example, the value of an ``add'' instruction is the integer that results from the addition and the value of a ``write'' instruction is the integer written to memory.
+The \emph{flow function} of $M$, denoted $f_M$, is defined by $f_M(x, t) = ((1, v_1), \dotsc, (t, v_t))$, where $v_i$ is the value associated with statement $i$ in the execution of $M$ on input $x$.
+Define $f_M(x)$ by $f_M(x) = f_M(x, T(|x|))$, where $T(n)$ is the function bounding the maximum running time of $M$ on inputs of length $n$.
 
 \begin{definition}[\textsc{Flow($M$)}]
   \mbox{} \\

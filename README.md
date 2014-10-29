@@ -1,7 +1,7 @@
 Stallings' Folding Process is Inherently Sequential
 ===================================================
 
-This file was last updated on 15 October 2014.
+This file was last updated on 29 October 2014.
 
 Downloading
 -----------
@@ -12,37 +12,29 @@ To download the paper using [Git][1], run
 
     git clone git@github.com:jfinkels/stallings.git
 
-[1]: http://git-scm.com
-
 A somewhat recent version of this work should be available at
-https://cs-people.bu.edu/jeffreyf/files/stallings.pdf, but I can't guarantee
-that that will always be up to date, since I compile and upload it manually.
+https://cs-people.bu.edu/jeffreyf#stallings, but I can't guarantee that it will
+always be up to date, since I compile and upload it manually.
+
+[1]: http://git-scm.com
 
 Compilation dependencies
 ------------------------
 
-Besides `pdflatex`, compile-time dependencies include the following LaTeX
-packages:
+This document requires `pdflatex` to compile and `biber` for bibliography
+management. The complete list of LaTeX packages required to compile this
+document can be found at the head of the file `stallings.tex`.
 
-* `amsmath`
-* `amsthm`
-* `amssymb`
-* `complexity`
-* `hyperref`
-* `thmtools`
-
-On Ubuntu 11.04, 11.10, 12.04, or 12.10, the necessary system packages which
-contain these LaTeX packages are:
-
-* `texlive-base`
-* `texlive-latex-base`
-* `texlive-latex-extra`
-* `texlive-science`
-
-To install them, run
+To install the necessary packages on Ubuntu, run
 
     sudo apt-get install texlive-base texlive-latex-base texlive-latex-extra \
-      texlive-science
+      texlive-science biber
+
+Unfortunately, the LaTeX package [`tkz-graph`][2] must be installed manually.
+The simplest solution to this problem is to download the file and place it in
+the same directory as the document to compile.
+
+[2]: http://www.ctan.org/pkg/tkz-graph
 
 Compiling
 ---------
@@ -50,8 +42,7 @@ Compiling
 To compile the document, run
 
     pdflatex stallings
-    bibtex stallings
-    pdflatex stallings
+    biber stallings
     pdflatex stallings
 
 The output is `stallings.pdf`, and can be viewed with any PDF reader.
@@ -61,10 +52,9 @@ Copyright
 
 Copyright 2012, 2013, 2014 Jeffrey Finkelstein.
 
-Except where otherwise noted, both the LaTeX markup and the content of both the
-article and the poster are made available under the terms of the Creative
-Commons Attribution-ShareAlike 3.0 license,
-https://creativecommons.org/licenses/by-sa/3.0/.
+Both the LaTeX markup and the compiled document are made available under the
+terms of the Creative Commons Attribution-ShareAlike 4.0 International License,
+https://creativecommons.org/licenses/by-sa/4.0/.
 
 Contact
 -------

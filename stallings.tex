@@ -5,7 +5,9 @@
 %% This LaTeX markup document is made available under the terms of the Creative
 %% Commons Attribution-ShareAlike 4.0 International License,
 %% https://creativecommons.org/licenses/by-sa/4.0/.
-\documentclass{article}
+\documentclass{elsarticlenonatbib}
+
+\journal{Information Processing Letters}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -13,7 +15,18 @@
 \usepackage{amsthm}
 %% This is strongly recommended by biblatex.
 \usepackage[english]{babel}
-\usepackage[backend=biber]{biblatex}
+%% These options are designed to simulate the default natbib style.
+\usepackage[
+  natbib=true,
+  backend=biber,
+  isbn=false,
+  url=false,
+  doi=false,
+  eprint=false,
+  style=numeric,
+  sorting=nyt,
+  sortcites=true
+]{biblatex}
 \usepackage[T1]{fontenc}
 %% This must come before csquotes.
 \usepackage[utf8]{inputenc}
@@ -25,7 +38,6 @@
 %% This must come before complexity.
 \usepackage{hyperref}
 \usepackage{complexity}
-\usepackage[firstpage]{draftwatermark}
 \usepackage{microtype}
 \usepackage{textcomp}
 \usepackage{tikz}
@@ -45,11 +57,6 @@
       {.} = {,1000}
     }
 
-%% Set the ``work-in-progress'' watermark for the first page.
-\SetWatermarkLightness{0.9}
-\SetWatermarkText{Work-in-progress}
-\SetWatermarkFontSize{3.5cm}
-
 %% Set the title and author of the PDF file.
 \hypersetup{pdftitle={Stallings' folding process is inherently sequential}, pdfauthor={Jeffrey Finkelstein}}
 
@@ -64,8 +71,6 @@
 \declaretheorem[numberlike=theorem, style=definition]{definition}
 
 %% Custom commands are declared here.
-\newcommand{\email}[1]{\textlangle\href{mailto:#1}{\nolinkurl{#1}}\textrangle}
-\newcommand{\todo}[1]{\textbf{TODO #1}}
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FC}{\textsc{Folded Characteristic}}
 \newcommand{\Flow}{\textsc{Flow($F$)}}
@@ -76,29 +81,21 @@
 \newcommand{\nega}{\textnormal{neg}}
 \newcommand{\Spm}{S^{\pm1}}
 
-%% Redefine the footnote environment so it has no reference and no number.
-\long\def\symbolfootnote#1{\begingroup%
-\def\thefootnote{\fnsymbol{footnote}}\footnotetext{#1}\endgroup}
-
-%% Define the author, title, and date for the document.
-\author{Jeffrey~Finkelstein\\ Computer Science Department, Boston University}
-\title{Stallings' folding process is inherently sequential}
-
 \begin{document}
 
-\maketitle
+\begin{frontmatter}
 
-\begin{abstract}
-  \input{abstract}
-\end{abstract}
+  \title{Stallings' Folding Process is Inherently Sequential}
 
-\symbolfootnote{%
-  Copyright 2012, 2013, 2014, 2015 Jeffrey~Finkelstein \email{jeffreyf@bu.edu}.
+  \auth[j]{Jeffrey~Finkelstein}
+  \ead{jeffreyf@bu.edu}
+  \address[j]{Boston University \\ Computer Science Department \\ 111 Cummington Mall \\ Boston, MA 02215 \\ +\oldstylenums{1} (\oldstylenums{617}) \oldstylenums{353 8919}}
 
-  This document is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License, which is available at \mbox{\url{https://creativecommons.org/licenses/by-sa/4.0/}}.
-  The \LaTeX{} markup that generated this document can be downloaded from its website at \mbox{\url{https://github.com/jfinkels/stallings}}.
-  The markup is distributed under the same license.
-}
+  \begin{keyword}
+    computational complexity \sep combinatorial problems
+  \end{keyword}
+
+\end{frontmatter}
 
 \section{Introduction}
 % Foreword

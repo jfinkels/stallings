@@ -121,7 +121,7 @@ This paper proves that it cannot by showing that some computational problems con
 % findings (focus on author) what? - what the work revealed when performing the task
 We show that computing a certain measure of density on the graph produced by Stallings' folding process is inherently sequential.
 We also show that counting the number of redundant steps in the process is inherently sequential.
-Finally, although we are unable to show that Stallings' folding process is inherently sequential according to the definition of an ``inherently sequential algorithm'', we do show that the function is $\FP$-complete.
+Finally, although we are unable to show that Stallings' folding process is inherently sequential according to the definition of an ``inherently sequential algorithm''\kern-0.5em, we do show that the function is $\FP$-complete.
 % conclusion (focus on readers) so what? - what the findings mean for the audience
 We conclude that asymptotically Stallings' folding process does not benefit from added parallelism.
 % perspective (focus on anyone) what now? - what should be done next
@@ -160,7 +160,7 @@ If furthermore $M$ makes at most one query to $F$, the reduction is called a \em
 
 Let $L$ be a language and $F$ be a computable function.
 If there is a logarithmic space many-one reduction from each language in $\P$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.
-Languages that are $\P$-complete are considered ``inherently sequential'', because a highly parallel algorithm for any one of them would imply a highly parallel algorithm for each language in $\P$, a result considered unlikely.
+Languages that are $\P$-complete are considered ``inherently sequential''\kern-0.5em, because a highly parallel algorithm for any one of them would imply a highly parallel algorithm for each language in $\P$, a result considered unlikely.
 If there is a logarithmic space Turing reduction from each language in $\P$ to $F$, then $F$ is \emph{$\FP$-hard}; if furthermore $F$ is in $\FP$, then $F$ is \emph{$\FP$-complete}.
 
 \subsection{Free groups}
@@ -184,7 +184,7 @@ The \emph{rank} of a finitely generated subgroup is the cardinality of a generat
 
 A two-tuple $(V, E)$ is a \emph{directed graph} if $V$ is a set of vertices and $E$ is a multiset of elements from $V \times V$.
 In this work, we write ``directed graph'' instead of ``directed multigraph''; note that multiple, parallel edges are allowed.
-We also refer to the ``edge set'' of a directed graph when we mean ``edge multiset''.
+We also refer to the ``edge set'' of a directed graph when we mean ``edge multiset''\kern-0.5em.
 If $G$ is a directed graph, we denote the vertex set of $G$ by $V(G)$ and the edge set of $G$ by $E(G)$.
 If $e$ is an edge in a graph and $e = (u, v)$, where $u$ and $v$ are vertices, then the \emph{origin} of $e$, denoted $o(e)$, is defined by $o(e) = u$ and the \emph{terminus} of $e$, denoted $t(e)$, is defined by $t(e) = v$.
 Two edges (in a multigraph) are \emph{parallel} if they have the same origin and terminus.

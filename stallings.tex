@@ -254,7 +254,7 @@ We will use this fact to show the $\P$-completeness of some related problems, an
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
     \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
-    \textbf{Question:} & Does $F(G)$ have Euler characteristic at most $k$?
+    \textbf{Question:} & Does $F(G)$ have Euler characteristic at least $k$?
   \end{tabular}
 \end{definition}
 
@@ -387,28 +387,29 @@ We show that both the problem of determining the Euler characteristic of the gra
 This is an indication that the algorithm itself is inherently sequential.
 In \autoref{sec:pcom}, we use these $\P$-complete problems to show just that.
 
-We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
-The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
-%% This can be found in, for example, Mathematics for Computer Science by
-%% Leighton, Meyer, and Lehman.
-\begin{lemma}\label{lem:tree}
-  Let $G$ be a graph with vertex set $V$ and edge set $E$.
-  If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
-\end{lemma}
-\begin{proof}
-  This proof is by induction on the number of vertices in the graph.
-  Let $T_n$ denote a minimal spanning tree on a graph $G_n$ with $n$ vertices.
-  For the base case, consider the graph on one vertex with no edges.
-  In this case, the minimal spanning tree $T_1$ is the empty tree, so
-  \begin{equation*}
-    0 = |E(T_1)| = |V(G)| - 1 = 1 - 1 = 0.
-  \end{equation*}
-  For the inductive step, suppose that for graphs with $i$ vertices, we have $|E(T_i)| = |V(G_i)| - 1$.
-  Consider a minimal spanning tree $T_{i + 1}$ of a graph $G_{i + 1}$ on $i + 1$ vertices.
-  Now the subgraph of $T_{i + 1}$ which is just $T_{i + 1}$ with a single leaf removed, call it $T_i$, is a minimal spanning tree of a subgraph of $G_{i + 1}$ which has $i$ vertices, call it $G_i$.
-  By the inductive hypothesis, $|E(T_i)| = |V(G_i)| - 1$.
-  This implies $|E(T_{i + 1})| = |E(T_i)| + 1 = |V(G_i)| = |V(G_{i + 1})| - 1$, which concludes the proof.
-\end{proof}
+Before proving the main theorem, we recall that the number of edges in a spanning tree of a graph is $n - 1$, where $n$ is the number of vertices in the graph.
+%% We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
+%% The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
+%% %% This can be found in, for example, Mathematics for Computer Science by
+%% %% Leighton, Meyer, and Lehman.
+%% \begin{lemma}\label{lem:tree}
+%%   Let $G$ be a graph with vertex set $V$ and edge set $E$.
+%%   If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
+%% \end{lemma}
+%% \begin{proof}
+%%   This proof is by induction on the number of vertices in the graph.
+%%   Let $T_n$ denote a minimal spanning tree on a graph $G_n$ with $n$ vertices.
+%%   For the base case, consider the graph on one vertex with no edges.
+%%   In this case, the minimal spanning tree $T_1$ is the empty tree, so
+%%   \begin{equation*}
+%%     0 = |E(T_1)| = |V(G)| - 1 = 1 - 1 = 0.
+%%   \end{equation*}
+%%   For the inductive step, suppose that for graphs with $i$ vertices, we have $|E(T_i)| = |V(G_i)| - 1$.
+%%   Consider a minimal spanning tree $T_{i + 1}$ of a graph $G_{i + 1}$ on $i + 1$ vertices.
+%%   Now the subgraph of $T_{i + 1}$ which is just $T_{i + 1}$ with a single leaf removed, call it $T_i$, is a minimal spanning tree of a subgraph of $G_{i + 1}$ which has $i$ vertices, call it $G_i$.
+%%   By the inductive hypothesis, $|E(T_i)| = |V(G_i)| - 1$.
+%%   This implies $|E(T_{i + 1})| = |E(T_i)| + 1 = |V(G_i)| = |V(G_{i + 1})| - 1$, which concludes the proof.
+%% \end{proof}
 
 \begin{theorem}\label{thm:fdpcomplete}
   \FC{} is $\P$-complete, even when the graph is both a flower graph and a core graph (with respect to the same vertex).
@@ -432,11 +433,11 @@ The lemma holds for all trees, but we state it for the specific case of minimal 
   \begin{align*}
     |Y| & = |E(G') \setminus E(T)| & \\
     & = |E(G')| - |E(T)| & \text{ (since } E(T) \subseteq E(G') \text{)} \\
-    & = |E(G')| - (|V(G')| - 1) & \text{ (by \autoref{lem:tree})} \\
-    & = |E(G')| - |V(G')| + 1 & \\
+    & = |E(G')| - (|V(G')| - 1) & \text{ (since } T \text{ is a spanning tree)} \\
+    & = (|E(G')| - |V(G')|) + 1 & \\
     & = -\chi(G') + 1 & \text{ (by definition of } \chi \text{)}.
   \end{align*}
-  With this equality (which also appears as \autocite[Lemma~8.2]{km02}), we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $1 - \chi(G') \leq k$.
+  With this equality (which also appears as \autocite[Lemma~8.2]{km02}), we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $1 - k \leq \chi(G')$.
 \end{proof}
 
 \begin{theorem}

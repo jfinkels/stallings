@@ -390,7 +390,7 @@ We show that both the problem of determining the Euler characteristic of the gra
 This is an indication that the algorithm itself is inherently sequential.
 In \autoref{sec:pcom}, we use these $\P$-complete problems to show just that.
 
-Before proving the main theorem, we recall that the number of edges in a spanning tree of a graph is $n - 1$, where $n$ is the number of vertices in the graph.
+%% Before proving the main theorem, we recall that the number of edges in a spanning tree of a graph is $n - 1$, where $n$ is the number of vertices in the graph.
 %% We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
 %% The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
 %% %% This can be found in, for example, Mathematics for Computer Science by
@@ -432,7 +432,7 @@ Before proving the main theorem, we recall that the number of edges in a spannin
     Y = \left\{\mu(p_e) \, \middle| \, e \in E(G') \setminus E(T) \right\},
   \end{equation*}
   where $G' = F(G)$ and $T$ is a spanning tree for $G'$.
-  Now
+  Recalling that the number of edges in a spanning tree is $|V(G)| - 1$, we have
   \begin{align*}
     |Y| & = |E(G') \setminus E(T)| & \\
     & = |E(G')| - |E(T)| & \text{ (since } E(T) \subseteq E(G') \text{)} \\

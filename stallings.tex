@@ -62,16 +62,13 @@
 \declaretheorem[numberlike=theorem]{conjecture}
 \declaretheorem[numberlike=theorem]{lemma}
 \declaretheorem[numberlike=theorem, style=definition]{definition}
-\declaretheorem[numberlike=theorem, style=definition]{todo}
 
 %% Custom commands are declared here.
 \newcommand{\email}[1]{\textlangle\href{mailto:#1}{\nolinkurl{#1}}\textrangle}
-%\newcommand{\todo}[1]{\textbf{TODO #1}}
+\newcommand{\todo}[1]{\textbf{TODO #1}}
 \newcommand{\FGR}{\textsc{Free Group Rank}}
 \newcommand{\FC}{\textsc{Folded Characteristic}}
 \newcommand{\Flow}{\textsc{Flow($F$)}}
-\newcommand{\BS}{\textsc{Bitwise Stallings}}
-\newcommand{\NDM}{\textsc{Centered NFA-to-DFA Minimization}}
 \newcommand{\PFolds}{\textsc{Parallel Folds}}
 \newcommand{\gen}[1]{\langle #1 \rangle}
 \newcommand{\Core}{\textnormal{Core}}
@@ -114,14 +111,14 @@ Stallings' process for ``folding'' a directed labeled graph \cite[Algorithm~5.4]
 % task (focus on author) why me? - what was undertaken to address the need
 Can Stallings' folding process solve the problem of finding the rank of a subgroup more quickly than the Nielsen reduction can?
 % object (focus on document) why this document - what the document covers
-This paper proves that it cannot by showing that some computational problems concerning the execution of this process are inherently sequential.
+This paper proves that it cannot by showing that the folding process is inherently sequential.
 
 % Summary
 %
 % findings (focus on author) what? - what the work revealed when performing the task
-We show that computing a certain measure of density on the graph produced by Stallings' folding process is inherently sequential.
+We show that the problem of deciding whether the result of Stallings' folding process satisfies a certain property is inherently sequential.
 We also show that counting the number of redundant steps in the process is inherently sequential.
-Finally, although we are unable to show that Stallings' folding process is inherently sequential according to the definition of an ``inherently sequential algorithm''\kern-0.5em, we do show that the function is $\FP$-complete.
+Finally, we show that the process itself is inherently sequential, using the definition of an ``inherently sequential algorithm''\kern-0.5em.
 % conclusion (focus on readers) so what? - what the findings mean for the audience
 We conclude that asymptotically Stallings' folding process does not benefit from added parallelism.
 % perspective (focus on anyone) what now? - what should be done next
@@ -146,22 +143,13 @@ We assume some familiarity with two well-known models of computation: the Turing
 For definitions and background information on these models, see \autocite{savage98}.
 
 We say a Turing machine $M$ \emph{decides} a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
-A function $f$ is \emph{computable} if there is a Turing machine that, on any input $x$, always halts with $f(x)$ on its tape.
 The complexity class $\P$ is the class of all languages that can be decided in polynomial time.
-The complexity class $\FP$ is the collection of functions that are computable by a Turing machine in polynomial time (that is, there is a Turing machine $M$ and a polynomial $p$ such that on inputs $x$ of length $n$, the machine $M$ halts with $f(x)$ on its tape within $p(n)$ steps).
-The complexity class $\L$ is the class of all languages that can be decided on a Turing machine with a read-only input tape and a read-write work tape using at most $O(\log n)$ space on the work tape.
-The complexity class $\FL$ is the collection of functions that are computable on a Turing machine with a read-only input tape, a write-only output tape, and a read-write work tape using at most $O(\log n)$ space on the work tape.
-
-If $L$ is a language, let $L(w)$ denote the \emph{characteristic function} of $w$, defined by $L(w) = 1$ if $w \in L$ and $L(w) = 0$ if $w \notin L$.
-If $L_1$ and $L_2$ are languages, there is a \emph{logarithmic space many-one reduction} from $L_1$ to $L_2$ if there is a function $f \in \FL$ such that $x \in L_1$ if and only if $f(x) \in L_2$.
-There is a \emph{logarithmic space nonadaptive Turing reduction} from $L_1$ to $L_2$ if there is a Turing machine $M$ and a function $h \in \FL$ such that $x \in L_1$ if and only if $M(x, L_2(y_1), \dotsc, L_2(y_t))$ accepts, where $(y_1, \dotsc, y_t)$ is the output of $h(x)$.
-If $L$ is a language and $F$ is a computable function, there is a \emph{logarithmic space Turing reduction} from $L$ to $F$ if there is an oracle Turing machine $M$ such that $x \in L$ if and only if $M^F(x)$ accepts, and $M$ uses at most $O(\log n)$ space.
-If furthermore $M$ makes at most one query to $F$, the reduction is called a \emph{logarithmic space single query Turing reduction}.
+A function $f$ is \emph{computable} if there is a Turing machine that, on any input $x$, always halts with $f(x)$ on its tape.
+If furthermore the Turing machine runs in polynomial time, then function is \emph{computable in polynomial time}.
 
 Let $L$ be a language and $F$ be a computable function.
 If there is a logarithmic space many-one reduction from each language in $\P$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.
 Languages that are $\P$-complete are considered ``inherently sequential''\kern-0.5em, because a highly parallel algorithm for any one of them would imply a highly parallel algorithm for each language in $\P$, a result considered unlikely.
-If there is a logarithmic space Turing reduction from each language in $\P$ to $F$, then $F$ is \emph{$\FP$-hard}; if furthermore $F$ is in $\FP$, then $F$ is \emph{$\FP$-complete}.
 
 \subsection{Free groups}
 
@@ -230,7 +218,7 @@ See \autoref{fig:example} for an example execution of the algorithm.
 \input{folding-example}
 
 \begin{theorem}[{\autocite{touikan06}}]\label{thm:finfp}
-  Stallings' folding process, $F$, is in $\FP$.
+  Stallings' folding process, $F$, is computable in polynomial time.
 \end{theorem}
 
 The input to $F$ is a finite alphabet $S$, a directed graph $G$, and a label function $\mu \colon E(G) \to S$.
@@ -258,7 +246,7 @@ We will use this fact to show the $\P$-completeness of some related problems, an
 \begin{definition}[\FC]
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
-    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
+    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E(G) \to S$, integer $k$. \\
     \textbf{Question:} & Does $F(G)$ have Euler characteristic at least $k$?
   \end{tabular}
 \end{definition}
@@ -266,10 +254,12 @@ We will use this fact to show the $\P$-completeness of some related problems, an
 \begin{definition}[\PFolds]
   \mbox{} \\
   \begin{tabular}{r p{9.5cm}}
-    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E \to S$, integer $k$. \\
+    \textbf{Instance:} & finite alphabet $S$, directed graph $G$, label function $\mu \colon E(G) \to S$, integer $k$. \\
     \textbf{Question:} & Is $N^\|_F(G)$ greater than or equal to $k$? Here, $N^\|_F(G)$ is the number of folds produced by running $F$ on input $G$ that are folds of a pair of parallel edges.
   \end{tabular}
 \end{definition}
+
+The former problem asks a question about the output of $F$, whereas the latter asks a question about the execution of $F$.
 
 Suppose $M$ is an arbitary RAM.
 For any input $x$, each statement executed by $M$ when run on input $x$ has an associated \emph{value}.
@@ -390,30 +380,6 @@ We show that both the problem of determining the Euler characteristic of the gra
 This is an indication that the algorithm itself is inherently sequential.
 In \autoref{sec:pcom}, we use these $\P$-complete problems to show just that.
 
-%% Before proving the main theorem, we recall that the number of edges in a spanning tree of a graph is $n - 1$, where $n$ is the number of vertices in the graph.
-%% We first require a basic lemma comparing the number of vertices in a minimal spanning tree to the number of edges in the spanned graph.
-%% The lemma holds for all trees, but we state it for the specific case of minimal spanning trees.
-%% %% This can be found in, for example, Mathematics for Computer Science by
-%% %% Leighton, Meyer, and Lehman.
-%% \begin{lemma}\label{lem:tree}
-%%   Let $G$ be a graph with vertex set $V$ and edge set $E$.
-%%   If $T$ is a minimal spanning tree of $G$ then $|E(T)| = |V(G)| - 1$.
-%% \end{lemma}
-%% \begin{proof}
-%%   This proof is by induction on the number of vertices in the graph.
-%%   Let $T_n$ denote a minimal spanning tree on a graph $G_n$ with $n$ vertices.
-%%   For the base case, consider the graph on one vertex with no edges.
-%%   In this case, the minimal spanning tree $T_1$ is the empty tree, so
-%%   \begin{equation*}
-%%     0 = |E(T_1)| = |V(G)| - 1 = 1 - 1 = 0.
-%%   \end{equation*}
-%%   For the inductive step, suppose that for graphs with $i$ vertices, we have $|E(T_i)| = |V(G_i)| - 1$.
-%%   Consider a minimal spanning tree $T_{i + 1}$ of a graph $G_{i + 1}$ on $i + 1$ vertices.
-%%   Now the subgraph of $T_{i + 1}$ which is just $T_{i + 1}$ with a single leaf removed, call it $T_i$, is a minimal spanning tree of a subgraph of $G_{i + 1}$ which has $i$ vertices, call it $G_i$.
-%%   By the inductive hypothesis, $|E(T_i)| = |V(G_i)| - 1$.
-%%   This implies $|E(T_{i + 1})| = |E(T_i)| + 1 = |V(G_i)| = |V(G_{i + 1})| - 1$, which concludes the proof.
-%% \end{proof}
-
 \begin{theorem}\label{thm:fdpcomplete}
   \FC{} is $\P$-complete, even when the graph is both a flower graph and a core graph (with respect to the same vertex).
 \end{theorem}
@@ -443,7 +409,9 @@ In \autoref{sec:pcom}, we use these $\P$-complete problems to show just that.
   With this equality (which also appears as \autocite[Lemma~8.2]{km02}), we conclude the proof by stating that $\gen{U}$ has rank at most $k$ if and only if $1 - k \leq \chi(G')$.
 \end{proof}
 
-\begin{theorem}
+We can also prove that determining a property of how the algorithm $F$ operates is inherently sequential, as well.
+
+\begin{theorem}\label{thm:pf}
   \PFolds{} is $\P$-complete, even when the graph is both a flower graph and a core graph (with respect to the same vertex).
 \end{theorem}
 \begin{proof}
@@ -472,111 +440,37 @@ In \autoref{sec:pcom}, we use these $\P$-complete problems to show just that.
 % Foreword
 
 % context (focus on anyone) why now? - current situation, and why the need is so important
-The previous section shows that computing the Euler characteristic of a graph after performing Stallings' folding process is an inherently sequential problem; adding more processors does not provide any substantial speedup.
-Since it is easy to compute the Euler characteristic of a graph, the hardness of this problem seems to stem from the sequential nature of the folding process: each fold depends on the result of the previous fold.
+The previous section shows that computing the number of parallel folds performed by Stallings' folding process is an inherently sequential problem; adding more processors does not provide any substantial speedup.
+Since it is easy to decide whether a particular fold is a fold of parallel edges, the hardness of this problem seems to stem from the sequential nature of the folding process: each fold depends on the result of the previous fold.
 % need (focus on readers) why you? - why this is relevant to the reader, and why something needed to be done
 % ...and task (focus on author) why me? - what was undertaken to address the need
-In an effort to formalize this intuition, we would like to prove that Stallings' folding process itself is an inherently sequential algorithm.
+In an effort to formalize this intuition, we would like to prove that Stallings' folding process itself is an inherently sequential algorithm;
 % object (focus on document) why this document - what the document covers
-This section shows that if there were a highly parallel algorithm that simulates Stallings' folding process, then each polynomial time algorithm could be simulated by a highly parallel algorithm (an outcome widely regarded as unlikely).
+this section proves that intuition.
 
 % Summary
 %
 % findings (focus on author) what? - what the work revealed when performing the task
-Specifically, we show that Stallings' folding process is $\FP$-complete, and that deciding $\Flow$ is complete for $\P$ under non-adaptive Turing reductions.
+Specifically, we show that computing any bit of the flow function of Stallings' folding process is $\P$-complete, thereby proving that the algorithm itself is inherently sequential.
 % conclusion (focus on readers) so what? - what the findings mean for the audience
-This means that computing the function $F$ is among the most difficult of all polynomial time computable functions, and that it should therefore be considered inherently sequential.
+This means the function $F$ is at least as difficult to compute as each other polynomial time computable function.
 % perspective (focus on anyone) what now? - what should be done next
-We conjecture that $\Flow$ is complete for $\P$ under logarithmic space many-one reductions (which would mean that $F$ satisfies the definition of ``inherently sequential algorithm'' as given in \autocite[Definition~8.2.2]{ghr95}), but are unable to show it.
-
-\begin{theorem}\label{thm:fpcomplete}
-  Stallings' folding process is complete for $\FP$ under logarithmic space single query Turing reductions.
-  More generally, Stallings' folding process is $\FP$-complete.
-\end{theorem}
-\begin{proof}
-  As stated in the introduction, Stallings' folding process is in $\FP$.
-  In order to show that $F$ is hard for $\P$, it suffices to show a logarithmic space single query Turing reduction from \FC{} to $F$.
-  The following logarithmic space Turing machine with access to an oracle for $F$ decides \FC{}.
-  On input $\langle S, G, \mu, k \rangle$,
-  \begin{itemize}
-  \item query $F$ on $\langle S, G, \mu \rangle$ to get graph $G'$ and label function $\mu'$,
-  \item accept if and only if $\chi(G') \geq k$. \qedhere
-  \end{itemize}
-\end{proof}
-
-We can use the fact that $F$ is $\FP$-complete to show that $\Flow$ is complete for $\P$ under logarithmic space non-adaptive Turing reductions.
-The completeness of $\Flow$ follows from the following two lemmas.
-The first shows that logarithmic space nonadaptive Turing reductions compose.
-The second provides a method for transforming an $\FP$-complete function into a language that is complete for $\P$ under logarithmic space nonadaptive Turing reductions.
-
-\begin{lemma}\label{lem:compose}
-  Logarithmic space nonadaptive Turing reductions compose.
-\end{lemma}
-\begin{proof}
-  Let $A$, $B$, and $C$ be arbitrary languages.
-  Suppose there are functions $g$ and $h$ in $\FL$ and logarithmic space Turing machine $M$ and $N$ such that $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts and $y \in B$ if and only if $N(y, C(z_1), \dotsc, C(z_t))$ accepts, where $g(x) = (y_1, \dotsc, y_s)$ and $h(y) = (z_1, \dotsc, z_t)$.
-
-  Let $g(x)_i$ denote the $i$th string in the $s$-tuple output by $g(x)$.
-  Define function $h'$ by $h'(x) = h(g(x)_1) \circ \dotsb \circ h(g(x)_s)$ for all strings $x$, where $\circ$ denotes concatenation of tuples.
-  The function $h'$ is in $\FL$ because $\FL$ functions compose.
-  Define Turing machine $M'$ as follows.
-  On input string $x$ and oracle answers $C(z_{1, 1}), \dotsc, C(z_{1, t_1}), \dotsc, C(z_{s, 1}), \dotsc, C(z_{s, t_s}))$,
-  \begin{itemize}
-  \item simulate $g(x)$ to yield $(y_1, \dotsc, y_s)$,
-  \item for each $y_i$, simulate $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$ to yield output bit $b_i$,
-  \item simulate $M(x, b_1, \dotsc, b_s)$.
-  \end{itemize}
-  The Turing machine $M'$ runs in logarithmic space because it is essentially computing the composition of three logarithmic space computable functions: $g$, $N$, and $M$.
-  We claim that $h'$ and $M'$ together constitute the reduction from $A$ to $C$.
-
-  By hypothesis $x \in A$ if and only if $M(x, B(y_1), \dotsc, B(y_s))$ accepts.
-  Also by hypothesis, for each $y_i$, we have $y_i \in B$ if and only if $N(y_i, C(z_{i, 1}), \dotsc, C(z_{i, t_i}))$ accepts.
-  Thus $x \in A$ if and only if
-  \begin{equation}\label{eq:m}
-    M(x, N(y_1, C(z_{1, 1}), \dotsc, C(z_{1, t_1})), \dotsc, N(y_s, C(z_{s, 1}), \dotsc, C(z_{s, t_s})))
-  \end{equation}
-  accepts.
-  By construction $M'(x, C(z_{1, 1}), \dotsc, C(z_{s, t_s}))$ computes exactly the same function as the machine in \eqref{eq:m}, so the reduction is correct.
-\end{proof}
-
-\begin{lemma}\label{lem:nonadaptive}
-  Suppose $f$ is a function and define $B_f$ by
-  \begin{equation*}
-    B_f = \{ \langle x, i, b \rangle \,|\, \text{the } i \text{th bit of } f(x) \text{ is } b \}.
-  \end{equation*}
-  If $f$ is complete for $\FP$ under logarithmic space single query Turing reductions, then $B_f$ is complete for $\P$ under logarithmic space nonadaptive Turing reductions.
-\end{lemma}
-\begin{proof}
-  Let $L$ be an arbitrary language in $\P$.
-  We know that there is a logarithmic space Turing machine $M$ that decides $L$ while making a single query to oracle $f$.
-  Assume without loss of generality that the machine makes its query at the beginning of the computation (this can be done by doing any preprocessing required by $M$ within the reduction).
-  Construct machine $M'$ to decide $L$ with oracle access to $B_f$.
-  The machine $M'$ simulates $M$, but replaces its single query $x$ with $p(|x|)$ queries of the form $\langle x, i, 1 \rangle$, one for each $i$ in $\{1, \dotsc, p(|x|) \}$, where $p$ is the polynomial that bounds the running time of $f$.
-  Whenever the oracle responds to query $\langle x, i, 1 \rangle$ with a $1$, we know the $i$th bit of $f(x)$ is $1$, and whenever the oracle responds with $0$, we know the $i$th bit of $f(x)$ is $0$.
-  In this way, $M'$ reconstructs $f(x)$, then proceeds with the computation of $M$.
-  Thus $M'$ is a correct logarithmic space Turing machine that decides $L$ with nonadaptive oracle access to $B_f$.
-\end{proof}
+However, a randomized algorithm or approximation algorithm remains a possibility.
 
 \begin{theorem}
-  \Flow{} is complete for $\P$ under logarithmic space non-adaptive Turing reductions, even when the input to $F$ is a flower graph and a core graph (with respect to the same vertex).
+  $\Flow$ is $\P$-complete, even when the graph is both a flower graph and a core graph (with respect to the same vertex).
+  In other words, Stallings' folding process is inherently sequential.
 \end{theorem}
 \begin{proof}
-  \Flow{} is in $\P$ because Stallings' folding process is computable in polynomial time, and checking individual bits of the computation history can be done in polynomial time as well.
+  Assume without loss of generality that $F$ accepts an additional input, $k$, and appends to its normal output a bit indicating whether the Euler characteristic of $F(G)$ is at least $k$.
+  We can make this assumption because the length of $k$ is at most the size of the graph $G$, and performing the additional computation on $F(G)$ can be done in polynomial time.
+  Thus the modified algorithm has an input not much larger than the original input, has a polynomial running time, and computes just a bit of additional information.
 
-  By \autoref{thm:fpcomplete} and \autoref{lem:nonadaptive}, $B_F$ is complete under logarithmic space nonadaptive Turing reductions.
-  It suffices to show a logarithmic space many-one reduction from $B_F$ to \Flow{}, since a many-one reduction implies a nonadaptive Turing reduction, and logarithmic space nonadaptive Turing reductions compose (\autoref{lem:compose}).
-  The reduction is $\langle \langle S, G, \mu \rangle, i, b \rangle \mapsto \langle \langle S, G, \mu \rangle, i', b\rangle$, where $i'$ is the index of the $i$th bit of the last binary string written during the computation of $F$ (assuming without loss of generality that $F$ writes its output to memory immediately before halting).
-  Bit $i'$ in the flow function is exactly the same as the $i$th bit of $F(S, G, \mu)$, so the reduction is correct.
+  Now $\FC$ reduces to $\Flow$, where $F$ is the modified folding process.
+  The reduction is $(G, S, \mu, k) \mapsto ((G, S, \mu, k), i, 1)$, where $i$ is the index of the very last bit of the output of the flow function.
+  The reduction is computable in logarithmic space because it copies its input to its output, writes the index of the last bit of the flow function (which is the binary representation of a number bounded by a polynomial in $n$), and writes the single bit 1.
+  The reduction is correct because the last bit of the output of the modified algorithm is 1 exactly when the Euler characteristic of $F(G)$ is at least $k$.
 \end{proof}
-
-The preceding theorem is weaker than we would like.
-Our goal is to show that Stallings' folding process is inherently sequential.
-In order to do that, we would need to prove that \Flow{} is complete for $\P$ under logarithmic space \emph{many-one} reductions.
-We believe this to be true but are unable to prove it.
-
-\begin{conjecture}
-  Stallings' folding process is inherently sequential (that is, \Flow{} is complete for $\P$ under logarithmic space many-one reductions).
-\end{conjecture}
 
 \printbibliography
 

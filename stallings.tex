@@ -178,16 +178,16 @@ A two-tuple $(V, E)$ is a \emph{directed graph} if $V$ is a set of vertices and 
 In this work, we write ``directed graph'' instead of ``directed multigraph''; note that multiple, parallel edges are allowed.
 We also refer to the ``edge set'' of a directed graph when we mean ``edge multiset''\kern-0.5em.
 If $G$ is a directed graph, we denote the vertex set of $G$ by $V(G)$ and the edge set of $G$ by $E(G)$.
+The \emph{Euler characteristic} of $G$, denoted $\chi(G)$, is defined by $\chi(G) = |V(G)| - |E(G)|$ for all graphs $G$.
 If $e$ is an edge in a graph and $e = (u, v)$, where $u$ and $v$ are vertices, then the \emph{origin} of $e$, denoted $o(e)$, is defined by $o(e) = u$ and the \emph{terminus} of $e$, denoted $t(e)$, is defined by $t(e) = v$.
 Two edges (in a multigraph) are \emph{parallel} if they have the same origin and terminus.
 A \emph{path from $u$ to $v$} in $G$, or more simply, a \emph{path}, is a finite sequence of edges, $(e_1, e_2, \dotsc, e_n)$, such that $o(e_1) = u$, $t(e_n) = v$, and $t(e_i) = o(e_{i + 1})$ for all $i \in \{1, \dotsc, n - 1\}$.
 A \emph{rooted circle} is a path from ``root'' vertex $v \in V(G)$ to the same vertex, along which each intermediate vertex, except possibly $v$, is incident to exactly two edges (namely, the one preceding it in the path and the one following it in the path).
 The directed graph $G$ is a \emph{flower graph} with respect to a vertex $v \in V(G)$ if it equals the union of circles rooted at $v$.
-%% TODO better definitions of minimal spanning trees
 If $G$ is a directed graph, a \emph{tree} $T$ with root $v$ is an acyclic subgraph of $G$ in which there is a path in $T$ from $v$ to every vertex in $V(T)$.
 A tree $T$ with root $v$ is a \emph{spanning tree} for $G$ if there is a path in $T$ from $v$ to every vertex in $V(G)$.
-A spanning tree is \emph{minimal} if no edges can be removed without violating the spanning property.
-The \emph{Euler characteristic} of $G$, denoted $\chi(G)$, is defined by $\chi(G) = |V(G)| - |E(G)|$ for all graphs $G$.
+%% A spanning tree is \emph{minimal} if no edges can be removed without violating the spanning property.
+A spanning tree with root $v$ is \emph{geodesic} if for each vertex $w$ in the graph, the length of the (unique) path from $v$ to $w$ in the tree equals the length of the shortest path from $v$ to $w$ in the graph.
 
 We say $G$ is \emph{labeled} by $S$ if there exists a function $\mu \colon E(G) \to S$.
 If $G$ is a labeled, directed graph, then its \emph{inverse graph}, denoted $\hat{G}$, has the same vertex set and edge set, but wherever there is an edge $(u, v) \in E(G)$ with label $s$ we add the inverse edge $(v, u)$ to $E(\hat{G})$ with label $s^{-1}$.

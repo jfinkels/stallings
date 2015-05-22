@@ -141,22 +141,23 @@ We conjecture that these problems are inherently sequential as well.
 
 A finite set $\Sigma$ is called an \emph{alphabet}.
 If $\Sigma$ is an alphabet, a \emph{word} over $\Sigma$ is a finite sequence of symbols from $\Sigma$.
-The set of all words over $\Sigma$ is denoted $\Sigma^*$.
-If $w$ is a word, the \emph{length} of $w$, denoted $|w|$, is the length of its underlying sequence.
-A \emph{language} is a subset of $\Sigma^*$.
+A \emph{language} is a set of strings over a finite alphabet.
+If $w$ is a word over $\Sigma$, the \emph{length} of $w$, denoted $|w|$, is the length of its underlying sequence.
 
 \subsection{Computational complexity}
 
 We assume some familiarity with two well-known models of computation: the Turing machine and the random access machine (RAM).
 For definitions and background information on these models, see \autocite{savage98}.
 
-We say a Turing machine $M$ \emph{decides} a language $L$ in polynomial time if for all words $x$ in $\Sigma^*$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$ for some polynomial $p$.
+We say a Turing machine $M$ \emph{decides} a language $L$ in polynomial time if there is a polynomial $p$ such that for all strings $x$, we have $x \in L$ if and only if $M$ accepts $x$, and $M$ halts within time $p(|x|)$.
 The complexity class $\P$ is the class of all languages that can be decided in polynomial time.
 A function $f$ is \emph{computable} if there is a Turing machine that, on any input $x$, always halts with $f(x)$ on its tape.
-If furthermore the Turing machine runs in polynomial time, then function is \emph{computable in polynomial time}.
+If furthermore the Turing machine runs in polynomial time, then the function is \emph{computable in polynomial time}.
+If furthermore the Turing machine runs in logarithmic space, then the function is \emph{computable in logarithmic space}.
 
-Let $L$ be a language and $F$ be a computable function.
-If there is a logarithmic space many-one reduction from each language in $\P$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.
+Let $L$ and $L'$ be languages.
+There is a \emph{logarithmic space many-one reduction} from $L'$ to $L$ if there is a logarithmic space computable function $f$ such that $x \in L'$ if and only if $f(x) \in L$.
+If for each language $L'$ in $\P$ there is a logarithmic space many-one reduction from $L'$ to $L$, then $L$ is \emph{$\P$-hard}; if furthermore $L$ is in $\P$, then $L$ is \emph{$\P$-complete}.
 Languages that are $\P$-complete are considered ``inherently sequential''\kern-0.5em, because a highly parallel algorithm for any one of them would imply a highly parallel algorithm for each language in $\P$, a result considered unlikely.
 
 \subsection{Free groups}

@@ -217,11 +217,11 @@ Informally, a \emph{fold} is a function which identifies not only two foldable e
 %% the same freely reduced language
 \emph{Stallings' folding process}, defined in \autocite[Algorithm~5.4]{stallings83}, is a function, denoted $F$, that operates on labeled, directed graphs.
 It proceeds by repeatedly choosing a foldable pair of edges (say, the lexicographically first pair) and folding them until there are no more foldable edges.
-See \autoref{fig:example} for an example execution of the algorithm.
+%See \autoref{fig:example} for an example execution of the algorithm.
 
 %% The figure illustrating an example run of Stallings' folding process is
 %% inserted here.
-\input{folding-example}
+% \input{folding-example}
 
 \begin{theorem}[{\autocite{touikan06}}]\label{thm:finfp}
   Stallings' folding process, $F$, is computable in polynomial time.
@@ -293,9 +293,9 @@ With this transformation and the fact that \FGR{} is $\P$-complete, we can show 
     Y = \left\{\mu(p_e) \, \middle| \, e \in E(G') \setminus E(T) \right\}.
   \end{equation*}
   In other words, $Y$ is the set of sequences of edge labels corresponding to the fundamental cycles of $G'$ with respect to $T$.
-  For an example of how to construct $Y$ from a tree $T$, see \autoref{fig:tree}.
+  % For an example of how to construct $Y$ from a tree $T$, see \autoref{fig:tree}.
   %% The figure illustrating the geodesic tree and the set Y is inserted here.
-  \input{tree-example}
+  %\input{tree-example}
   Now
   \begin{align*}
     \gen{U} & = \rho(L(G, v_0)) & \qquad \text{(by \cite[Proposition~3.8]{km02})} \\

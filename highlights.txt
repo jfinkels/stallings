@@ -1,0 +1,3 @@
+- We review how the free group rank problem reduces to Stallings' folding process.
+- Deciding some properties of Stallings' folding process is inherently sequential.
+- Stallings' folding process itself is inherently sequential.

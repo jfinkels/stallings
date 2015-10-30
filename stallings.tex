@@ -485,7 +485,7 @@ For each natural number $n$, this graph on $4 n + 2$ nodes and edges corresponds
 
 \input{worstcase}
 
-At each step of Stallings' folding process, there is exactly one foldable pair of edges, the leftmost pair of ``branching'' edges, so no parallelization can be applied; the total number of steps in the process must be $\Theta(n)$, even if we allow folding multiple foldable edges at each step.
+At each step of Stallings' folding process, there is exactly one foldable pair of edges, the leftmost pair of ``branching'' edges, so no parallelization can be applied; the total number of steps in the process must be $\Theta(m)$, where $m$ is the number of edges, even if we allow folding multiple foldable edges at each step.
 
 \todo{Is there a dense worst-case graph?}
 \todo{Is there an approximation for graphs like this?}

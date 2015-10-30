@@ -1,0 +1,37 @@
+\begin{center}
+  \begin{tikzpicture}[->, invisible/.style={color=white}]
+    \GraphInit[vstyle=Simple]
+    \tikzset{VertexStyle/.style={shape=circle, fill=black,
+        minimum size=2pt, inner sep=0pt}}
+
+    \begin{scope}[VertexStyle/.append style = {minimum size=6pt}]
+      \Vertex{v0}
+    \end{scope}
+    \NOEA(v0){top_a}
+    \EA(top_a){top_ab}
+    \EA(top_ab){top_abdots}
+    \EA(top_abdots){top_aba}
+    \EA(top_aba){top_abab}
+    \SOEA(top_abab){end}
+
+    \SOEA(v0){bottom_a}
+    \EA(bottom_a){bottom_ab}
+    \EA(bottom_ab){bottom_abdots}
+    \EA(bottom_abdots){bottom_aba}
+    \EA(bottom_aba){bottom_abab}
+
+    \Edge[style={bend left}, label={$a$}](v0)(top_a)
+    \Edge[label={$b$}](top_a)(top_ab)
+    \Edge[label={$\dotsc$}](top_ab)(top_abdots)
+    \Edge[label={$a$}](top_abdots)(top_aba)
+    \Edge[label={$b$}](top_aba)(top_abab)
+    \Edge[style={bend left}, label={$a$}](top_abab)(end)
+
+    \Edge[style={bend right}, label={$a$}](v0)(bottom_a)
+    \Edge[label={$b$}](bottom_a)(bottom_ab)
+    \Edge[label={$\dotsc$}](bottom_ab)(bottom_abdots)
+    \Edge[label={$a$}](bottom_abdots)(bottom_aba)
+    \Edge[label={$b$}](bottom_aba)(bottom_abab)
+    \Edge[style={bend right}, label={$b$}](bottom_abab)(end)
+  \end{tikzpicture}
+\end{center}

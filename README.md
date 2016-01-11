@@ -1,7 +1,7 @@
 Stallings' Folding Process is Inherently Sequential
 ===================================================
 
-This file was last updated on 29 October 2014.
+This file was last updated on January 11, 2016.
 
 Downloading
 -----------
@@ -50,7 +50,7 @@ The output is `stallings.pdf`, and can be viewed with any PDF reader.
 Copyright
 ---------
 
-Copyright 2012, 2013, 2014 Jeffrey Finkelstein.
+Copyright 2012, 2013, 2014, 2015, 2016 Jeffrey Finkelstein.
 
 Both the LaTeX markup and the compiled document are made available under the
 terms of the Creative Commons Attribution-ShareAlike 4.0 International License,
